@@ -1,4 +1,8 @@
 import {format} from "date-fns";
+import displayHeader from "./header.js";
+import displayContainer from "./container.js";
+import displaySidebar from "./sidebar.js";
+import displayFooter from "./footer.js";
 
 // Task factory function
 const Task = (name, dueDate) => {
@@ -35,6 +39,10 @@ const Group = (name, dueDate) => {
   return {getName, getDueDate, getArr, getTaskNames, setName, setDueDate, pushTask, deleteTask};
 }
 
+displayHeader();
+displayContainer();
+displaySidebar();
+displayFooter();
 
 // Debugging Task and Group
 
