@@ -1,7 +1,10 @@
 import './style.css';
 
 export default function displaySidebar() {
-  const containerDiv = document.querySelector(".container");
+  const contentDiv = document.querySelector("#content");
+  const containerDiv = document.createElement("div");
+  containerDiv.classList.add("container");
+  contentDiv.appendChild(containerDiv);
 
   const sidebarDiv = document.createElement("div");
   sidebarDiv.classList.add("sidebar");

@@ -1,6 +1,5 @@
 import {format} from "date-fns";
 import displayHeader from "./header.js";
-import displayContainer from "./container.js";
 import displaySidebar from "./sidebar.js";
 import displayFooter from "./footer.js";
 
@@ -40,7 +39,6 @@ const Group = (name, dueDate) => {
 }
 
 displayHeader();
-displayContainer();
 displaySidebar();
 displayFooter();
 
