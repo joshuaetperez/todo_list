@@ -6,8 +6,10 @@ export default function displaySidebar() {
   const sidebarDiv = document.createElement("div");
   sidebarDiv.classList.add("sidebar");
 
-  const sidebarList = document.createElement("ul");
-  sidebarList.classList.add("sidebar-list");
+  const taskList = document.createElement("ul");
+  const groupList = document.createElement("ul");
+  taskList.classList.add("task-list");
+  groupList.classList.add("group-list");
 
   const todayTab = document.createElement("li");
   const monthTab = document.createElement("li");
@@ -15,6 +17,8 @@ export default function displaySidebar() {
   const addTaskTab = document.createElement("li");
   const groupsTab = document.createElement("li");
   const addGroupTab = document.createElement("li");
+  addTaskTab.classList.add("add-tab");
+  addGroupTab.classList.add("add-tab");
 
   todayTab.textContent = "Today";
   monthTab.textContent = "Month";
@@ -23,18 +27,14 @@ export default function displaySidebar() {
   groupsTab.textContent = "Groups";
   addGroupTab.textContent = "Add Group";
 
-  sidebarList.appendChild(todayTab);
-  sidebarList.appendChild(monthTab);
-  sidebarList.appendChild(allTasksTab);
-  sidebarList.appendChild(addTaskTab);
-  sidebarList.appendChild(groupsTab);
-  sidebarList.appendChild(addGroupTab);
+  taskList.appendChild(todayTab);
+  taskList.appendChild(monthTab);
+  taskList.appendChild(allTasksTab);
+  taskList.appendChild(addTaskTab);
+  groupList.appendChild(groupsTab);
+  groupList.appendChild(addGroupTab);
 
-  sidebarDiv.appendChild(sidebarList);
+  sidebarDiv.appendChild(taskList);
+  sidebarDiv.appendChild(groupList);
   containerDiv.appendChild(sidebarDiv);
-
-  const otherDiv = document.createElement("div");
-  otherDiv.classList.add("main");
-  otherDiv.textContent = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, aspernatur. Dolores, maxime? Exercitationem esse debitis perspiciatis odit dolor natus quae soluta possimus nobis quis! Repellat ex nemo laborum et omnis.";
-  containerDiv.appendChild(otherDiv);
 }

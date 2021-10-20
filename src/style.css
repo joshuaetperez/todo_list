@@ -41,16 +41,38 @@ ul {
   position: fixed;
   height: calc(100vh - 84px);
   width: 200px;
+  font-size: 24px;
 }
 
 .main {
-  font-size: 100px;
+  font-size: 24px;
   margin-left: 200px;
 }
 
-.sidebar-list {
+.task-list,
+.group-list {
   display: flex;
   flex-direction: column;
   list-style-type: none;
+}
+
+.task-list li,
+.group-list li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.task-list li:hover,
+.group-list li:hover {
+  background-color: rgb(57, 204, 204, 0.75);
+}
+
+.add-tab {
+  background-color: #3D9970;
+}
+
+.task-list .add-tab:hover,
+.group-list .add-tab:hover {
+  background-color: rgb(61, 153, 112, 0.75);
 }
 
