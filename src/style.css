@@ -5,8 +5,18 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
+:root {
+  --header-footer-height: 42px;
+  --sidebar-width: 200px;
+  --form-padding: 5px;
+}
   
 body {
+  margin: 0;
+}
+
+h3 {
   margin: 0;
 }
 
@@ -31,23 +41,23 @@ ul {
 }
 
 .container {
+  background-color: #e5e5e5;
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .sidebar {
   background-color: #DDDDDD;
   text-align: center;
   position: fixed;
-  height: calc(100vh - 84px);
-  width: 200px;
+  height: calc(100vh - (2 * var(--header-footer-height)));
+  width: var(--sidebar-width);
   font-size: 24px;
 }
 
 .main {
-  background-color: #e5e5e5;
   font-size: 24px;
-  margin-left: 200px;
+  margin-left: var(--sidebar-width);
 }
 
 .task-list,
@@ -70,10 +80,30 @@ ul {
 
 .add-tab {
   background-color: #3D9970;
+  border-bottom: 2px #333 solid;
 }
 
 .task-list .add-tab:hover,
 .group-list .add-tab:hover {
   background-color: rgb(61, 153, 112, 0.75);
+}
+
+.all-forms {
+  background-color: #3D9970;
+  padding: var(--form-padding);
+}
+
+#task-form {
+  /* display: none; */
+  display: flex;
+  flex-direction: column;
+  width: calc(--sidebar-width - --form-padding);
+}
+
+.form-button-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  gap: 5px;
 }
 
