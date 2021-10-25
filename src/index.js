@@ -1,7 +1,6 @@
 import {format} from "date-fns";
 import Task from "./task.js";
 import Group from "./group.js";
-import taskForm from "./taskForm.js";
 import displayHeader from "./header.js";
 import displaySidebar from "./sidebar.js";
 import displayToday from "./today.js";
@@ -11,7 +10,6 @@ displayHeader();
 displaySidebar();
 displayToday();
 displayFooter();
-// addTaskForm();
 
 // Debugging Task and Group
 

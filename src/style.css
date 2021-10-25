@@ -80,6 +80,9 @@ ul {
 
 .add-tab {
   background-color: #3D9970;
+}
+
+.add-tab-border {
   border-bottom: 2px #333 solid;
 }
 
@@ -88,16 +91,13 @@ ul {
   background-color: rgb(61, 153, 112, 0.75);
 }
 
-.all-forms {
-  background-color: #3D9970;
-  padding: var(--form-padding);
-}
-
-#task-form {
-  /* display: none; */
-  display: flex;
+#task-form,
+#group-form {
+  display: none;
   flex-direction: column;
   width: calc(--sidebar-width - --form-padding);
+  padding: var(--form-padding);
+  background-color: #3D9970;
 }
 
 .form-button-div {
