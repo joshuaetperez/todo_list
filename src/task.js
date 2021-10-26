@@ -11,4 +11,15 @@ const Task = (name, dueDate) => {
   return {getName, getDueDate, getCompletedStatus, setDueDate, changeCompletedStatus};
 };
 
+// Module for tasks that have not been assigned a group
+const UngroupedTasks = (() => {
+  const ungroupedTaskArr = [];
+
+  const getArr = () => ungroupedTaskArr;
+  const pushTask = (task) => ungroupedTaskArr.push(task);
+
+
+  return {getArr, pushTask};
+})();
+
 export default Task;

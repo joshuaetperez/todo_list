@@ -39,22 +39,27 @@ export default function displaySidebar() {
   const taskForm = document.createElement("form");
   const taskFormTitle = document.createElement("input");
   const taskFormDate = document.createElement("input");
+  const taskFormGroup = document.createElement("input");
   const taskFormSubmit = document.createElement("input");
   const taskFormCancel = document.createElement("input");
   const todaysDate = format(new Date(), "yyyy-MM-dd");
   taskFormButtonDiv.classList.add("form-button-div");
   taskFormTitle.setAttribute("type", "text");
   taskFormDate.setAttribute("type", "date");
+  taskFormGroup.setAttribute("type", "text");
   taskFormSubmit.setAttribute("type", "button");
   taskFormCancel.setAttribute("type", "button");
   taskFormDiv.classList.add("task-form-div");
   taskForm.id = "task-form";
   taskFormTitle.id = "ftitle-task";
   taskFormDate.id = "fdate-task";
+  taskFormGroup.id = "fgroup-task";
   taskFormSubmit.id = "fsubmit-task";
   taskFormCancel.id = "fcancel-task";
   taskFormTitle.placeholder = "Title of Task";
+  taskFormGroup.placeholder = "Group of Task (can be empty)";
   taskFormTitle.maxLength = 100;
+  taskFormGroup.maxLength = 50;
   taskFormDate.min = todaysDate;
   taskFormTitle.required = true;
   taskFormDate.required = true;
@@ -67,26 +72,20 @@ export default function displaySidebar() {
   const groupFormButtonDiv = document.createElement("div");
   const groupForm = document.createElement("form");
   const groupFormTitle = document.createElement("input");
-  const groupFormDate = document.createElement("input");
   const groupFormSubmit = document.createElement("input");
   const groupFormCancel = document.createElement("input");
   groupFormButtonDiv.classList.add("form-button-div");
   groupFormTitle.setAttribute("type", "text");
-  groupFormDate.setAttribute("type", "date");
   groupFormSubmit.setAttribute("type", "button");
   groupFormCancel.setAttribute("type", "button");
   groupFormDiv.classList.add("group-form-div");
   groupForm.id = "group-form";
   groupFormTitle.id = "ftitle-group";
-  groupFormDate.id = "fdate-group";
   groupFormSubmit.id = "fsubmit-group";
   groupFormCancel.id = "fcancel-group";
   groupFormTitle.placeholder = "Title of Group";
   groupFormTitle.maxLength = 50;
-  groupFormDate.min = todaysDate;
   groupFormTitle.required = true;
-  groupFormDate.required = true;
-  groupFormDate.value = todaysDate;
   groupFormSubmit.value = "Submit";
   groupFormCancel.value = "Cancel";
 
@@ -104,6 +103,7 @@ export default function displaySidebar() {
 
   // Appends all the elements to the sidebar section
   taskForm.appendChild(taskFormTitle);
+  taskForm.appendChild(taskFormGroup);
   taskForm.appendChild(taskFormDate);
   taskFormButtonDiv.appendChild(taskFormSubmit);
   taskFormButtonDiv.appendChild(taskFormCancel);
@@ -111,7 +111,6 @@ export default function displaySidebar() {
   taskFormDiv.appendChild(taskForm);
 
   groupForm.appendChild(groupFormTitle);
-  groupForm.appendChild(groupFormDate);
   groupFormButtonDiv.appendChild(groupFormSubmit);
   groupFormButtonDiv.appendChild(groupFormCancel);
   groupForm.appendChild(groupFormButtonDiv);
@@ -151,10 +150,6 @@ function addTabReset(type) {
     addGroupTab.classList.remove("add-tab-border");
     groupForm.style.display = 'none';
     groupForm.reset();
-  
-    const todaysDate = format(new Date(), "yyyy-MM-dd");
-    const groupFormDate = document.querySelector("#fdate-group");
-    groupFormDate.value = todaysDate;
   }
 }
 

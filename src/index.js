@@ -4,11 +4,13 @@ import Group from "./group.js";
 import displayHeader from "./header.js";
 import displaySidebar from "./sidebar.js";
 import displayToday from "./today.js";
+import displayAllTasks from "./all-tasks.js";
 import displayFooter from "./footer.js";
 
 displayHeader();
 displaySidebar();
-displayToday();
+// displayToday();
+displayAllTasks();
 displayFooter();
 
 // Debugging Task and Group
