@@ -1,9 +1,9 @@
-import './style.css';
+import '../style.css';
 import {format} from "date-fns";
 import Task from "./task.js";
 
 export default function displayToday() {
-  const containerDiv = document.querySelector(".container");
+  const containerDiv = document.querySelector(".main");
 
   // const task1Date = format(new Date(2021, 10, 1), "MM/dd/yyyy");
   // const task1 = Task("Take out the trash", task1Date);

@@ -1,4 +1,4 @@
-import './style.css';
+import '../style.css';
 
 export default function displayHeader() {
   const contentDiv = document.querySelector("#content");
