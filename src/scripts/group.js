@@ -1,3 +1,5 @@
+import {format, parseISO} from "date-fns";
+
 // Group factory function
 const Group = (name) => {
   let taskArr = [];
@@ -35,9 +37,26 @@ const AllTasks = (() => {
   const getArr = () => allTasksArr;
   const pushTask = (task) => allTasksArr.push(task);
 
-
   return {getArr, pushTask};
 })();
 
+// Module for tasks due today
+const TodaysTasks = (() => {
+  const todaysTasksArr = [];
+
+  const getArr = () => todaysTasksArr;
+  const pushTask = (task) => todaysTasksArr.push(task);
+  const populateArr = () => {
+    const todaysDate = new Date();
+    const allTasksArr = AllTasks.getArr();
+
+    allTasksArr.forEach(task => {
+      if (task.getDueDate() === todaysDate) todaysTasksArr.push(task);
+    });
+  }
+
+  return {getArr, pushTask, populateArr};
+})();
+
 export default Group;
-export { CreatedGroups, AllTasks };
+export { CreatedGroups, AllTasks, TodaysTasks };

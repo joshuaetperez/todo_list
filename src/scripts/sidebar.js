@@ -113,15 +113,15 @@ export default function displaySidebar() {
 
   // TEMPORARY DATA FOR DEBEUGGING
   const task1Date = format(new Date(2021, 10, 1), "MM/dd/yyyy");
-  const task1 = Task("Take out the trash", task1Date);
+  const task1 = Task("Take out the trash", "", task1Date);
   const task2Date = format(new Date(2021, 10, 2), "MM/dd/yyyy");
-  const task2 = Task("Do the dishes", task2Date);
+  const task2 = Task("Do the dishes", "", task2Date);
   const task3Date = format(new Date(2021, 10, 3), "MM/dd/yyyy");
-  const task3 = Task("Clean the house", task3Date);
+  const task3 = Task("Clean the house", "", task3Date);
   const task4Date = format(new Date(2021, 10, 4), "MM/dd/yyyy");
-  const task4 = Task("Go grocery shopping", task4Date);
+  const task4 = Task("Go grocery shopping", "", task4Date);
   const task5Date = format(new Date(2021, 10, 5), "MM/dd/yyyy");
-  const task5 = Task("Do homework", task5Date);
+  const task5 = Task("Do homework", "", task5Date);
   AllTasks.pushTask(task1);
   AllTasks.pushTask(task2);
   AllTasks.pushTask(task3);
@@ -163,9 +163,11 @@ function addTabReset(type) {
   if (type === "task") {
     const addTaskTab = document.querySelector("#add-task");
     const taskForm = document.querySelector("#task-form");
+    const taskFormName = document.querySelector("#fname-task");
     addTaskTab.classList.remove("add-tab-border");
     taskForm.style.display = 'none';
     taskForm.reset();
+    taskFormName.placeholder = "Name of Task";
 
     const todaysDate = format(new Date(), "yyyy-MM-dd");
     const taskFormDate = document.querySelector("#fdate-task");
@@ -213,28 +215,33 @@ function taskSubmitEvent(e) {
   const taskFormDate = document.querySelector("#fdate-task");
   const taskFormGroup = document.querySelector("#fgroup-task");
 
-  // SUBMIT TASK INFO HERE
+  // If task name field is empty, signal error and do nothing
+  if (taskFormName.value === "") {
+    addTaskTab.classList.add("missing-name-field");
+    taskForm.classList.add("missing-name-field");
+    setTimeout(function() { 
+      addTaskTab.classList.remove("missing-name-field");
+      taskForm.classList.remove("missing-name-field");
+    }, 500);
+    taskFormName.placeholder = "Must include a Task name";
+    return;
+  }
+
   const newTaskDate = format(parseISO(taskFormDate.value), "MM/dd/yyyy");
-  const newTask = Task(taskFormName.value, newTaskDate);
-  AllTasks.pushTask(newTask);
+  const newTask = Task(taskFormName.value, "", newTaskDate);
 
   if (taskFormGroup.value !== "") {
     // Still need to check if group exists and stuff
     // If is does NOT exist, create it and push it in CreatedGroups
 
-    // If the "Name of Task" field is empty, DO NOTHING
-
     const newGroup = Group(taskFormGroup.value);
-    console.log(newGroup.getName());
-
     newGroup.pushTask(newTask);
-    console.log(newGroup.getArr()[0].getName());
-
+    newTask.setGroupName(newGroup.getName());
     CreatedGroups.pushGroup(newGroup);
-    console.log(CreatedGroups.getArr()[0].getName());
   }
+  AllTasks.pushTask(newTask);
 
-
+  taskFormName.placeholder = "Name of Task";
   taskFormName.value = "";
 }
 

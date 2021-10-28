@@ -1,42 +1,41 @@
 import '../style.css';
 import {format} from "date-fns";
 import Task from "./task.js";
+import Group, { CreatedGroups, TodaysTasks } from './group.js';
+import resetPage from './reset-page.js';
 
 export default function displayToday() {
+  if (CurrentTab.getTab() === "Today") {
+    return;
+  }
+  resetPage();
   const containerDiv = document.querySelector(".main");
+  const TodaysTasksArr = TodaysTasks.getArr();
 
-  // const task1Date = format(new Date(2021, 10, 1), "MM/dd/yyyy");
-  // const task1 = Task("Take out the trash", task1Date);
-  // const task2Date = format(new Date(2021, 10, 2), "MM/dd/yyyy");
-  // const task2 = Task("Do the dishes", task2Date);
-  // const task3Date = format(new Date(2021, 10, 3), "MM/dd/yyyy");
-  // const task3 = Task("Clean the house", task3Date);
-  // const task4Date = format(new Date(2021, 10, 4), "MM/dd/yyyy");
-  // const task4 = Task("Go grocery shopping", task4Date);
-  // const task5Date = format(new Date(2021, 10, 5), "MM/dd/yyyy");
-  // const task5 = Task("Do homework", task5Date);
+  TodaysTasksArr.forEach(task => {
+    const taskDiv = document.createElement("div");
+    const rightSideDiv = document.createElement("div");
+    const taskName = document.createElement("div");
+    const taskDueDate = document.createElement("p");
+    const removeButton = document.createElement('button');
+    const groupName = task.getGroupName();
+    taskDiv.classList.add("task-div");
+    rightSideDiv.classList.add("right-side-div");
+    taskName.textContent = task.getName();
+    taskDueDate.textContent = task.getDueDate();
 
-  // const task1Div = document.createElement("div");
-  // const task2Div = document.createElement("div");
-  // const task3Div = document.createElement("div");
-  // const task4Div = document.createElement("div");
-  // const task5Div = document.createElement("div");
-  // task1Div.classList.add("main");
-  // task2Div.classList.add("main");
-  // task3Div.classList.add("main");
-  // task4Div.classList.add("main");
-  // task5Div.classList.add("main");
-  // task1Div.textContent = task1.getName();
-  // task2Div.textContent = task2.getName();
-  // task3Div.textContent = task3.getName();
-  // task4Div.textContent = task4.getName();
-  // task5Div.textContent = task5.getName();
+    if (groupName !== "") {
+      taskName.textContent += ` (${groupName})`;
+    }
 
-  // containerDiv.appendChild(task1Div);
-  // containerDiv.appendChild(task2Div);
-  // containerDiv.appendChild(task3Div);
-  // containerDiv.appendChild(task4Div);
-  // containerDiv.appendChild(task5Div);
+    removeButton.className = 'remove material-icons';
+    removeButton.textContent = 'close';
 
-  
+    rightSideDiv.appendChild(taskDueDate);
+    rightSideDiv.appendChild(removeButton);
+
+    taskDiv.appendChild(taskName);
+    taskDiv.appendChild(rightSideDiv);
+    containerDiv.appendChild(taskDiv);
+  });
 }

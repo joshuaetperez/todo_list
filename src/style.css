@@ -142,6 +142,25 @@ ul {
   background-color: #3D9970;
 }
 
+.missing-name-field {
+  animation-name: turn-red;
+  animation-duration: 0.5s;
+}
+
+@keyframes turn-red {
+  0% {
+    background-color: #3D9970;
+  }
+
+  50% {
+    background-color: #FF0000;
+  }
+
+  100% {
+    background-color: #3D9970;
+  }
+}
+
 .form-button-div {
   display: flex;
   justify-content: center;
