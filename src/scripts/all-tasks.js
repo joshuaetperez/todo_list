@@ -10,6 +10,7 @@ export default function displayAllTasks() {
     return;
   }
   resetPage();
+  CurrentTab.setTab("All Tasks");
   const containerDiv = document.querySelector(".main");
   const allTasksArr = AllTasks.getArr();
 

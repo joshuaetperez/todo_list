@@ -4,7 +4,7 @@ const CurrentTab = (() => {
 
   const getTab = () => tab;
   const setTab = (newTab) => {
-    if (newTab === "Today" || newTab === "Month" || newTab === "All Tasks" || newTab === "Groups") tab = newTab;
+    if (newTab === "Today" || newTab === "Next 7 Days" || newTab === "All Tasks" || newTab === "Groups") tab = newTab;
   }; 
 
   return {getTab, setTab};

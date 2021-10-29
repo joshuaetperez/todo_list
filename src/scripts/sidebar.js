@@ -1,8 +1,10 @@
 import '../style.css';
-import {format, parseISO} from "date-fns";
+import {addDays, format, isWithinInterval, parseISO, startOfToday} from "date-fns";
 import Task from "./task.js";
-import Group, { CreatedGroups, AllTasks } from './group.js';
+import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from './group.js';
 import displayAllTasks from "./all-tasks.js";
+import displayToday from './today.js';
+import displayNext7Days from './next-7-days.js';
 
 export default function displaySidebar() {
   const contentDiv = document.querySelector("#content");
@@ -19,7 +21,7 @@ export default function displaySidebar() {
 
   // Creates the tabs for taskList and groupList
   const todayTab = document.createElement("li");
-  const monthTab = document.createElement("li");
+  const next7DaysTab = document.createElement("li");
   const allTasksTab = document.createElement("li");
   const addTaskTab = document.createElement("li");
   const groupsTab = document.createElement("li");
@@ -30,7 +32,7 @@ export default function displaySidebar() {
   addGroupTab.id = "add-group";
 
   todayTab.textContent = "Today";
-  monthTab.textContent = "Month";
+  next7DaysTab.textContent = "Next 7 Days";
   allTasksTab.textContent = "All Tasks";
   addTaskTab.textContent = "Add Task";
   groupsTab.textContent = "Groups";
@@ -104,29 +106,14 @@ export default function displaySidebar() {
   taskFormCancel.addEventListener("click", taskCancelEvent);
   groupFormCancel.addEventListener("click", groupCancelEvent);
 
-  // Adds an event listener to the "Today", "Month", "All Tasks", and "Group" tabs that open their respective pages
-  allTasksTab.addEventListener("click", allTasksEvent);
+  // Adds an event listener to the "Today", "Next 7 Days", "All Tasks", and "Group" tabs that open their respective pages
+  allTasksTab.addEventListener("click", allTasksTabEvent);
+  todayTab.addEventListener("click", todayTabEvent);
+  next7DaysTab.addEventListener("click", next7DaysTabEvent);
 
   // Creates the main section (the container that holds the content to the right of the sidebar)
   const mainDiv = document.createElement("div");
-  mainDiv.classList.add("main");
-
-  // TEMPORARY DATA FOR DEBEUGGING
-  const task1Date = format(new Date(2021, 10, 1), "MM/dd/yyyy");
-  const task1 = Task("Take out the trash", "", task1Date);
-  const task2Date = format(new Date(2021, 10, 2), "MM/dd/yyyy");
-  const task2 = Task("Do the dishes", "", task2Date);
-  const task3Date = format(new Date(2021, 10, 3), "MM/dd/yyyy");
-  const task3 = Task("Clean the house", "", task3Date);
-  const task4Date = format(new Date(2021, 10, 4), "MM/dd/yyyy");
-  const task4 = Task("Go grocery shopping", "", task4Date);
-  const task5Date = format(new Date(2021, 10, 5), "MM/dd/yyyy");
-  const task5 = Task("Do homework", "", task5Date);
-  AllTasks.pushTask(task1);
-  AllTasks.pushTask(task2);
-  AllTasks.pushTask(task3);
-  AllTasks.pushTask(task4);
-  AllTasks.pushTask(task5);
+  mainDiv.classList.add("main"); 
 
   // Appends all the elements to the sidebar section
   taskForm.appendChild(taskFormName);
@@ -144,7 +131,7 @@ export default function displaySidebar() {
   groupFormDiv.appendChild(groupForm);
 
   taskList.appendChild(todayTab);
-  taskList.appendChild(monthTab);
+  taskList.appendChild(next7DaysTab);
   taskList.appendChild(allTasksTab);
   taskList.appendChild(addTaskTab);
   taskList.appendChild(taskFormDiv);
@@ -227,9 +214,10 @@ function taskSubmitEvent(e) {
     return;
   }
 
-  const newTaskDate = format(parseISO(taskFormDate.value), "MM/dd/yyyy");
-  const newTask = Task(taskFormName.value, "", newTaskDate);
+  const newTaskDateString = format(parseISO(taskFormDate.value), "MM/dd/yyyy");
+  const newTask = Task(taskFormName.value, "", newTaskDateString);
 
+  // If the user has input a group, insert the task to the associated Group
   if (taskFormGroup.value !== "") {
     // Still need to check if group exists and stuff
     // If is does NOT exist, create it and push it in CreatedGroups
@@ -240,6 +228,20 @@ function taskSubmitEvent(e) {
     CreatedGroups.pushGroup(newGroup);
   }
   AllTasks.pushTask(newTask);
+
+  // If the task due date is within the next 7 days, insert the task to the Next7DaysTasks Group
+  const todaysDate = startOfToday();
+  const SevenDaysFromNowDate = addDays(todaysDate, 6);
+  console.log(SevenDaysFromNowDate);
+  if (isWithinInterval(parseISO(taskFormDate.value), {start: todaysDate, end: SevenDaysFromNowDate})) {
+    Next7DaysTasks.pushTask(newTask);
+  }
+
+  // If the task due date is today, insert the task to the TodaysTasks Group
+  const todaysDateString = format(new Date(), "MM/dd/yyyy");
+  if (newTask.getDueDate() === todaysDateString) {
+    TodaysTasks.pushTask(newTask);
+  }
 
   taskFormName.placeholder = "Name of Task";
   taskFormName.value = "";
@@ -266,7 +268,17 @@ function groupCancelEvent(e) {
   addTabReset("group");
 }
 
-// When the "All Tasks" button is pressed, activate the "all-tasks" module
-function allTasksEvent(e) {
+// When the "All Tasks" button is pressed, call the "all-tasks" module
+function allTasksTabEvent(e) {
   displayAllTasks();
+}
+
+// When the "All Tasks" button is pressed, call the "today" module
+function todayTabEvent() {
+  displayToday();
+}
+
+// When the "Next 7 days" button is pressed, call the "today" module
+function next7DaysTabEvent() {
+  displayNext7Days();
 }
