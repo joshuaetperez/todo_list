@@ -29,15 +29,15 @@ const AllTasks = (() => {
   const pushTask = (task) => allTasksArr.push(task);
 
    // TEMPORARY DATA FOR DEBEUGGING
-  const task1Date = format(new Date(2021, 10, 1), "MM/dd/yyyy");
+  const task1Date = format(new Date(2021, 10, 10), "MM/dd/yyyy");
   const task1 = Task("Take out the trash", "", task1Date);
-  const task2Date = format(new Date(2021, 10, 2), "MM/dd/yyyy");
+  const task2Date = format(new Date(2021, 10, 11), "MM/dd/yyyy");
   const task2 = Task("Do the dishes", "Cleaning", task2Date);
-  const task3Date = format(new Date(2021, 10, 3), "MM/dd/yyyy");
+  const task3Date = format(new Date(2021, 10, 12), "MM/dd/yyyy");
   const task3 = Task("Clean the house", "Cleaning", task3Date);
-  const task4Date = format(new Date(2021, 10, 4), "MM/dd/yyyy");
+  const task4Date = format(new Date(2021, 10, 13), "MM/dd/yyyy");
   const task4 = Task("Go grocery shopping", "", task4Date);
-  const task5Date = format(new Date(2021, 10, 5), "MM/dd/yyyy");
+  const task5Date = format(new Date(2021, 10, 14), "MM/dd/yyyy");
   const task5 = Task("Do homework", "", task5Date);
   const task6Date = format(new Date(), "MM/dd/yyyy");
   const task6 = Task("Clip fingernails", "School", task6Date);

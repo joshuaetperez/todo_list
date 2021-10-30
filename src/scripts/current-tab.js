@@ -1,6 +1,6 @@
 // Module that keeps track of the current tab
 const CurrentTab = (() => {
-  let tab = "Today";
+  let tab = ""; // Will be set to "Today" when website starts
 
   const getTab = () => tab;
   const setTab = (newTab) => {

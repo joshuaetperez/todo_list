@@ -3,8 +3,10 @@ import {addDays, format, isWithinInterval, parseISO, startOfToday} from "date-fn
 import Task from "./task.js";
 import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from './group.js';
 import displayAllTasks from "./all-tasks.js";
-import displayToday from './today.js';
-import displayNext7Days from './next-7-days.js';
+import displayToday from "./today.js";
+import displayNext7Days from "./next-7-days.js";
+import CurrentTab from "./current-tab.js";
+import addTaskToPage from "./add-task-to-page.js";
 
 export default function displaySidebar() {
   const contentDiv = document.querySelector("#content");
@@ -227,20 +229,24 @@ function taskSubmitEvent(e) {
     newTask.setGroupName(newGroup.getName());
     CreatedGroups.pushGroup(newGroup);
   }
+
+  // Insert the task to the AllTasks group
   AllTasks.pushTask(newTask);
+  if (CurrentTab.getTab() === "All Tasks") addTaskToPage(newTask);
 
   // If the task due date is within the next 7 days, insert the task to the Next7DaysTasks Group
   const todaysDate = startOfToday();
   const SevenDaysFromNowDate = addDays(todaysDate, 6);
-  console.log(SevenDaysFromNowDate);
   if (isWithinInterval(parseISO(taskFormDate.value), {start: todaysDate, end: SevenDaysFromNowDate})) {
     Next7DaysTasks.pushTask(newTask);
+    if (CurrentTab.getTab() === "Next 7 Days") addTaskToPage(newTask);
   }
 
   // If the task due date is today, insert the task to the TodaysTasks Group
   const todaysDateString = format(new Date(), "MM/dd/yyyy");
   if (newTask.getDueDate() === todaysDateString) {
     TodaysTasks.pushTask(newTask);
+    if (CurrentTab.getTab() === "Today") addTaskToPage(newTask);
   }
 
   taskFormName.placeholder = "Name of Task";
