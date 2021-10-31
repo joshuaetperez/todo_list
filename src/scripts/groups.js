@@ -6,6 +6,7 @@ import CurrentTab from "./current-tab.js";
 import resetPage from "./reset-page.js";
 import addTaskToPage from "./add-task-to-page.js";
 
+// Sets up the "Groupss" page
 export default function displayGroups() {
   if (CurrentTab.getTab() === "Groups") {
     return;
@@ -13,29 +14,44 @@ export default function displayGroups() {
   resetPage();
   CurrentTab.setTab("Groups");
   const CreatedGroupsArr = CreatedGroups.getArr();
-  CreatedGroupsArr.forEach(group => addGroupToPage(group));
+  CreatedGroupsArr.forEach(group => {
+    addGroupToPage(group);
+    addAllTasksToGroupPage(group);
+  });
 }
 
-// Adds a group to the bottom of the "Groups" page
+// Adds a Group to the bottom of the "Groups" page
 function addGroupToPage(group) {
+  const groupName = group.getName();
   const containerDiv = document.querySelector(".main");
   const groupDiv = document.createElement("div");
-  // const rightSideDiv = document.createElement("div");
-  const groupName = document.createElement("div");
-  // const removeButton = document.createElement('button');
-  groupDiv.classList.add("task-div");
-  // rightSideDiv.classList.add("right-side-div");
-  groupName.textContent = group.getName();
+  const groupNameDiv = document.createElement("div");
+  const groupTaskContainer = document.createElement("div");
+  groupDiv.classList.add("group-div");
+  groupTaskContainer.classList.add("group-task-container");
+  groupDiv.id = groupName;
+  groupNameDiv.textContent = groupName;
 
-  // removeButton.className = 'remove material-icons';
-  // removeButton.textContent = 'close';
-
-  // rightSideDiv.appendChild(groupDueDate);
-  // rightSideDiv.appendChild(removeButton);
-
-  groupDiv.appendChild(groupName);
-  // groupDiv.appendChild(rightSideDiv);
+  groupDiv.appendChild(groupNameDiv);
+  groupDiv.appendChild(groupTaskContainer);
   containerDiv.appendChild(groupDiv);
 }
 
-export { addGroupToPage };
+// Helper function that adds all the Tasks of a Group to a div
+function addAllTasksToGroupPage(group) {
+  const groupArr = group.getArr();
+  const groupName = group.getName();
+  const groupTaskContainer = document.querySelector(`#${groupName}`).lastChild;
+
+  groupArr.forEach(task => addTaskToPage(task, groupTaskContainer, false));
+}
+
+// Adds the task to the bottom of the Tasks section of the Group it belongs to
+function addTaskToGroupPage(task, group) {
+  const groupName = group.getName();
+  const groupTaskContainer = document.querySelector(`#${groupName}`).lastChild;
+
+  addTaskToPage(task, groupTaskContainer, false);
+}
+
+export { addGroupToPage, addTaskToGroupPage };

@@ -1,6 +1,6 @@
-// Adds a task to the bottom of the todo list page
-export default function addTaskToPage(task) {
-  const containerDiv = document.querySelector(".main");
+// Adds a task to the bottom of the specified container
+// Input: a Task object, the DOM container, and a boolean specifying whether the Group name should be added next to the Task name
+export default function addTaskToPage(task, containerDiv, addGroupName) {
   const taskDiv = document.createElement("div");
   const rightSideDiv = document.createElement("div");
   const taskName = document.createElement("div");
@@ -12,12 +12,12 @@ export default function addTaskToPage(task) {
   taskName.textContent = task.getName();
   taskDueDate.textContent = task.getDueDate();
 
-  if (groupName !== "") {
+  if ((groupName !== "") && (addGroupName === true)) {
     taskName.textContent += ` (${groupName})`;
   }
 
-  removeButton.className = 'remove material-icons';
-  removeButton.textContent = 'close';
+  removeButton.className = "remove unselectable material-icons";
+  removeButton.textContent = "close";
 
   rightSideDiv.appendChild(taskDueDate);
   rightSideDiv.appendChild(removeButton);

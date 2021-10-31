@@ -187,3 +187,16 @@ ul {
 .remove:hover {
   transform: scale(1.5, 1.5);
 }
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.group-task-container {
+  /* display: none */
+  background-color: #fff;
+  margin-left: 20px;
+}

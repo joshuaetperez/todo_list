@@ -68,8 +68,8 @@ const AllTasks = (() => {
   const schoolGroup = Group("School");
   cleaningGroup.pushTask(task2);
   cleaningGroup.pushTask(task3);
-  schoolGroup.pushTask(task3);
-  schoolGroup.pushTask(task3); 
+  schoolGroup.pushTask(task6);
+  schoolGroup.pushTask(task7); 
   CreatedGroups.pushGroup(cleaningGroup);
   CreatedGroups.pushGroup(schoolGroup);
 

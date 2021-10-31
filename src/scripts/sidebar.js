@@ -5,7 +5,7 @@ import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from "./g
 import displayAllTasks from "./all-tasks.js";
 import displayToday from "./today.js";
 import displayNext7Days from "./next-7-days.js";
-import displayGroups, { addGroupToPage } from "./groups.js";
+import displayGroups, { addGroupToPage, addTaskToGroupPage } from "./groups.js";
 import CurrentTab from "./current-tab.js";
 import addTaskToPage from "./add-task-to-page.js";
 
@@ -233,6 +233,7 @@ function displayGroupForm(e) {
 
 // When the "Submit" button in the "Add Task" section is pressed, submit the form info
 function taskSubmitEvent(e) {
+  const containerDiv = document.querySelector(".main");
   const taskFormName = document.querySelector("#fname-task");
   const taskFormDate = document.querySelector("#fdate-task");
   const taskFormGroup = document.querySelector("#fgroup-task");
@@ -251,38 +252,40 @@ function taskSubmitEvent(e) {
   // If the user has input a group, insert the task to the associated Group
   if (groupName !== "") {
     // If the group already exists, just insert the task in the group
+    let taskGroup;
     const groupIndex = CreatedGroups.getGroupIndex(groupName);
     if (groupIndex > -1) {
-      const createdGroup = CreatedGroups.getArr()[groupIndex];
-      createdGroup.pushTask(newTask);
+      taskGroup = CreatedGroups.getArr()[groupIndex];
+      taskGroup.pushTask(newTask);
     }
     // Else, create a new group to insert the task in and insert the group in CreatedGroups
     else {
-      const taskGroup = Group(groupName);
+      taskGroup = Group(groupName);
       taskGroup.pushTask(newTask);
       CreatedGroups.pushGroup(taskGroup);
       if (CurrentTab.getTab() === "Groups") addGroupToPage(taskGroup);
     }
     newTask.setGroupName(groupName);
+    addTaskToGroupPage(newTask, taskGroup);
   }
 
   // Insert the task to the AllTasks group
   AllTasks.pushTask(newTask);
-  if (CurrentTab.getTab() === "All Tasks") addTaskToPage(newTask);
+  if (CurrentTab.getTab() === "All Tasks") addTaskToPage(newTask, containerDiv, true);
 
   // If the task due date is within the next 7 days, insert the task to the Next7DaysTasks Group
   const todaysDate = startOfToday();
   const SevenDaysFromNowDate = addDays(todaysDate, 6);
   if (isWithinInterval(parseISO(taskFormDate.value), {start: todaysDate, end: SevenDaysFromNowDate})) {
     Next7DaysTasks.pushTask(newTask);
-    if (CurrentTab.getTab() === "Next 7 Days") addTaskToPage(newTask);
+    if (CurrentTab.getTab() === "Next 7 Days") addTaskToPage(newTask, containerDiv, true);
   }
 
   // If the task due date is today, insert the task to the TodaysTasks Group
   const todaysDateString = format(new Date(), "MM/dd/yyyy");
   if (newTask.getDueDate() === todaysDateString) {
     TodaysTasks.pushTask(newTask);
-    if (CurrentTab.getTab() === "Today") addTaskToPage(newTask);
+    if (CurrentTab.getTab() === "Today") addTaskToPage(newTask, containerDiv, true);
   }
 
   taskFormName.placeholder = "Name of Task";
