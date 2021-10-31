@@ -1,10 +1,11 @@
 import '../style.css';
 import {addDays, format, isWithinInterval, parseISO, startOfToday} from "date-fns";
 import Task from "./task.js";
-import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from './group.js';
+import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from "./group.js";
 import displayAllTasks from "./all-tasks.js";
 import displayToday from "./today.js";
 import displayNext7Days from "./next-7-days.js";
+import displayGroups, { addGroupToPage } from "./groups.js";
 import CurrentTab from "./current-tab.js";
 import addTaskToPage from "./add-task-to-page.js";
 
@@ -105,13 +106,14 @@ export default function displaySidebar() {
   groupFormSubmit.addEventListener("click", groupSubmitEvent);
 
   // Adds an event listener to the "Cancel" button hides the form
-  taskFormCancel.addEventListener("click", taskCancelEvent);
-  groupFormCancel.addEventListener("click", groupCancelEvent);
+  taskFormCancel.addEventListener("click", () => addTabReset("task"));
+  groupFormCancel.addEventListener("click", () => addTabReset("group"));
 
   // Adds an event listener to the "Today", "Next 7 Days", "All Tasks", and "Group" tabs that open their respective pages
-  allTasksTab.addEventListener("click", allTasksTabEvent);
-  todayTab.addEventListener("click", todayTabEvent);
-  next7DaysTab.addEventListener("click", next7DaysTabEvent);
+  allTasksTab.addEventListener("click", () => displayAllTasks());
+  todayTab.addEventListener("click", () => displayToday());
+  next7DaysTab.addEventListener("click", () => displayNext7Days());
+  groupsTab.addEventListener("click", () => displayGroups());
 
   // Creates the main section (the container that holds the content to the right of the sidebar)
   const mainDiv = document.createElement("div");
@@ -147,7 +149,8 @@ export default function displaySidebar() {
   containerDiv.appendChild(mainDiv);
 }
 
-// Resets and hides the specified form (task/group)
+// Resets and hides the specified form
+// Input: "task" or "group"
 function addTabReset(type) {
   if (type === "task") {
     const addTaskTab = document.querySelector("#add-task");
@@ -165,10 +168,42 @@ function addTabReset(type) {
   else if (type === "group") {
     const addGroupTab = document.querySelector("#add-group");
     const groupForm = document.querySelector("#group-form");
+    const groupFormName = document.querySelector("#fname-group");
   
     addGroupTab.classList.remove("add-tab-border");
     groupForm.style.display = 'none';
     groupForm.reset();
+    groupFormName.placeholder = "Name of Group";
+  }
+}
+
+// Change color of "Add Task"/"Add Group" tab and form for a moment
+// Input: "task" or "group"
+function alertSubmitError(type) {
+  if (type === "task") {
+    const addTaskTab = document.querySelector("#add-task");
+    const taskForm = document.querySelector("#task-form");
+    const taskFormName = document.querySelector("#fname-task");
+
+    addTaskTab.classList.add("missing-name-field");
+    taskForm.classList.add("missing-name-field");
+    setTimeout(function() { 
+      addTaskTab.classList.remove("missing-name-field");
+      taskForm.classList.remove("missing-name-field");
+    }, 500);
+    taskFormName.placeholder = "Must include a Task name";
+  }
+  else if (type === "group") {
+    const addGroupTab = document.querySelector("#add-group");
+    const groupForm = document.querySelector("#group-form");
+    const groupFormName = document.querySelector("#fname-group");
+  
+    addGroupTab.classList.add("missing-name-field");
+    groupForm.classList.add("missing-name-field");
+    setTimeout(function() { 
+      addGroupTab.classList.remove("missing-name-field");
+      groupForm.classList.remove("missing-name-field");
+    }, 500);
   }
 }
 
@@ -198,36 +233,37 @@ function displayGroupForm(e) {
 
 // When the "Submit" button in the "Add Task" section is pressed, submit the form info
 function taskSubmitEvent(e) {
-  const addTaskTab = document.querySelector("#add-task");
-  const taskForm = document.querySelector("#task-form");
   const taskFormName = document.querySelector("#fname-task");
   const taskFormDate = document.querySelector("#fdate-task");
   const taskFormGroup = document.querySelector("#fgroup-task");
+  const taskName = taskFormName.value;
+  const groupName = taskFormGroup.value;
 
-  // If task name field is empty, signal error and do nothing
-  if (taskFormName.value === "") {
-    addTaskTab.classList.add("missing-name-field");
-    taskForm.classList.add("missing-name-field");
-    setTimeout(function() { 
-      addTaskTab.classList.remove("missing-name-field");
-      taskForm.classList.remove("missing-name-field");
-    }, 500);
-    taskFormName.placeholder = "Must include a Task name";
+  // If task name field is empty, signal error and return
+  if (taskName === "") {
+    alertSubmitError("task");
     return;
   }
 
   const newTaskDateString = format(parseISO(taskFormDate.value), "MM/dd/yyyy");
-  const newTask = Task(taskFormName.value, "", newTaskDateString);
+  const newTask = Task(taskName, "", newTaskDateString);
 
   // If the user has input a group, insert the task to the associated Group
-  if (taskFormGroup.value !== "") {
-    // Still need to check if group exists and stuff
-    // If is does NOT exist, create it and push it in CreatedGroups
-
-    const newGroup = Group(taskFormGroup.value);
-    newGroup.pushTask(newTask);
-    newTask.setGroupName(newGroup.getName());
-    CreatedGroups.pushGroup(newGroup);
+  if (groupName !== "") {
+    // If the group already exists, just insert the task in the group
+    const groupIndex = CreatedGroups.getGroupIndex(groupName);
+    if (groupIndex > -1) {
+      const createdGroup = CreatedGroups.getArr()[groupIndex];
+      createdGroup.pushTask(newTask);
+    }
+    // Else, create a new group to insert the task in and insert the group in CreatedGroups
+    else {
+      const taskGroup = Group(groupName);
+      taskGroup.pushTask(newTask);
+      CreatedGroups.pushGroup(taskGroup);
+      if (CurrentTab.getTab() === "Groups") addGroupToPage(taskGroup);
+    }
+    newTask.setGroupName(groupName);
   }
 
   // Insert the task to the AllTasks group
@@ -255,36 +291,31 @@ function taskSubmitEvent(e) {
 
 // When the "Submit" button in the "Add Group" section is pressed, submit the form info
 function groupSubmitEvent(e) {
-  const addTaskGroup = document.querySelector("#add-group");
-  const groupForm = document.querySelector("#group-form");
   const groupFormName = document.querySelector("#fname-group");
+  const groupName = groupFormName.value;
 
-  // SUBMIT GROUP INFO HERE
+  // If group name field is empty, signal error and return
+  if (groupName === "") {
+    alertSubmitError("group");
+    groupFormName.placeholder = "Must include a Group name";
+    return;
+  }
 
+  // If the group already exists, signal error and return
+  const groupIndex = CreatedGroups.getGroupIndex(groupName);
+  if (groupIndex > -1) {
+    alertSubmitError("group");
+    groupFormName.placeholder = "Group already exists";
+    groupFormName.value = "";
+    return;
+  }
+  // Else, create a new group to insert in CreatedGroups
+  else {
+    const taskGroup = Group(groupName);
+    CreatedGroups.pushGroup(taskGroup);
+    if (CurrentTab.getTab() === "Groups") addGroupToPage(taskGroup);
+  }
+
+  groupFormName.placeholder = "Name of Group";
   groupFormName.value = "";
-}
-
-// When the "Cancel" button in the "Add Task" section is pressed, hide the form
-function taskCancelEvent(e) {
-  addTabReset("task");
-}
-
-// When the "Cancel" button in the "Add Group" section is pressed, hide the form
-function groupCancelEvent(e) {
-  addTabReset("group");
-}
-
-// When the "All Tasks" button is pressed, call the "all-tasks" module
-function allTasksTabEvent(e) {
-  displayAllTasks();
-}
-
-// When the "All Tasks" button is pressed, call the "today" module
-function todayTabEvent() {
-  displayToday();
-}
-
-// When the "Next 7 days" button is pressed, call the "today" module
-function next7DaysTabEvent() {
-  displayNext7Days();
 }

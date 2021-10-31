@@ -21,6 +21,20 @@ const Group = (name) => {
   return {getName, getArr, getTaskNames, setName, pushTask, deleteTask};
 }
 
+// Module that contains all created groups
+const CreatedGroups = (() => {
+  const CreatedGroupsArr = [];
+
+  const getArr = () => CreatedGroupsArr;
+  const pushGroup = (group) => CreatedGroupsArr.push(group);
+  const getGroupIndex = (groupName) => {
+    const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
+    return CreatedGroupsArr.findIndex(hasGroupName);
+  }
+
+  return {getArr, pushGroup, getGroupIndex};
+})();
+
 // Module for all tasks
 const AllTasks = (() => {
   const allTasksArr = [];
@@ -50,24 +64,16 @@ const AllTasks = (() => {
   allTasksArr.push(task5);
   allTasksArr.push(task6);
   allTasksArr.push(task7);
-  // const cleaningGroup = Group("Cleaning");
-  // const schoolGroup = Group("School");
-  // cleaningGroup.pushTask(task2);
-  // cleaningGroup.pushTask(task3);
-  // schoolGroup.pushTask(task3);
-  // schoolGroup.pushTask(task3); 
+  const cleaningGroup = Group("Cleaning");
+  const schoolGroup = Group("School");
+  cleaningGroup.pushTask(task2);
+  cleaningGroup.pushTask(task3);
+  schoolGroup.pushTask(task3);
+  schoolGroup.pushTask(task3); 
+  CreatedGroups.pushGroup(cleaningGroup);
+  CreatedGroups.pushGroup(schoolGroup);
 
   return {getArr, pushTask};
-})();
-
-// Module that contains all created groups
-const CreatedGroups = (() => {
-  const groupArr = [];
-
-  const getArr = () => groupArr;
-  const pushGroup = (group) => groupArr.push(group);
-
-  return {getArr, pushGroup};
 })();
 
 // Module for tasks due today
