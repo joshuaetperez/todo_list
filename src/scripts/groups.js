@@ -6,7 +6,7 @@ import CurrentTab from "./current-tab.js";
 import resetPage from "./reset-page.js";
 import addTaskToPage from "./add-task-to-page.js";
 
-// Sets up the "Groupss" page
+// Sets up the "Groups" page
 export default function displayGroups() {
   if (CurrentTab.getTab() === "Groups") {
     return;

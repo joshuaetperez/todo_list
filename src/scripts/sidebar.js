@@ -266,7 +266,7 @@ function taskSubmitEvent(e) {
       if (CurrentTab.getTab() === "Groups") addGroupToPage(taskGroup);
     }
     newTask.setGroupName(groupName);
-    addTaskToGroupPage(newTask, taskGroup);
+    if (CurrentTab.getTab() === "Groups") addTaskToGroupPage(newTask, taskGroup);
   }
 
   // Insert the task to the AllTasks group
