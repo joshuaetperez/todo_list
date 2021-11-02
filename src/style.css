@@ -195,8 +195,14 @@ ul {
   user-select: none;
 }
 
+.group-name-container {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
 .group-task-container {
-  /* display: none */
+  display: none;
   background-color: #fff;
   margin-left: 20px;
 }

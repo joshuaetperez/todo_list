@@ -5,7 +5,7 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
   const rightSideDiv = document.createElement("div");
   const taskName = document.createElement("div");
   const taskDueDate = document.createElement("p");
-  const removeButton = document.createElement('button');
+  const removeButton = document.createElement("button");
   const groupName = task.getGroupName();
   taskDiv.classList.add("task-div");
   rightSideDiv.classList.add("right-side-div");
