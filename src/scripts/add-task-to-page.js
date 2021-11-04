@@ -38,7 +38,7 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
   containerDiv.appendChild(taskDiv);
 }
 
-// Remove button event listener
+// Remove Task button event listener
 function removeTask(e) {
   const removeButton = e.target;
   const leftSideDiv = removeButton.parentNode.previousSibling;

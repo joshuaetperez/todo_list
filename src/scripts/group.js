@@ -35,8 +35,12 @@ const CreatedGroups = (() => {
     return CreatedGroupsArr.findIndex(hasGroupName);
   }
   const pushGroup = (group) => CreatedGroupsArr.push(group);
+  const removeGroup = (groupName) => {
+    const groupIndex = getGroupIndex(groupName);
+    CreatedGroupsArr.splice(groupIndex, 1);
+  }
 
-  return {getArr, getGroup, getGroupIndex, pushGroup};
+  return {getArr, getGroup, getGroupIndex, pushGroup, removeGroup};
 })();
 
 // Module for all tasks

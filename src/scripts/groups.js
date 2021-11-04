@@ -1,7 +1,7 @@
 import '../style.css';
 import {format} from "date-fns";
 import Task from "./task.js";
-import Group, { CreatedGroups, AllTasks } from "./group.js";
+import Group, { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
 import CurrentTab from "./current-tab.js";
 import resetPage from "./reset-page.js";
 import addTaskToPage from "./add-task-to-page.js";
@@ -40,6 +40,7 @@ function addGroupToPage(group) {
   groupDiv.id = groupName;
   groupNameDiv.textContent = groupName;
   groupNameContainer.addEventListener("click", toggleGroupTaskList);
+  groupDeleteIcon.addEventListener("click", deleteGroup);
 
   groupNameContainer.appendChild(groupNameDiv);
   groupNameContainer.appendChild(groupDeleteIcon);
@@ -80,6 +81,31 @@ function toggleGroupTaskList(e) {
     this.classList.add("open-group-task-list");
     groupTaskContainer.style.display = "block";
   }
+}
+
+// Delete Group button event listener
+function deleteGroup(e) {
+  const deleteButton = e.target;
+
+  // Get group name
+  const groupName = deleteButton.previousSibling.textContent;
+
+  // Remove all group tasks from AllTasks, Next7Days, and Today
+  const groupToDelete = CreatedGroups.getGroup(groupName);
+  const groupToDeleteArr = groupToDelete.getArr();
+  groupToDeleteArr.forEach(task => {
+    const taskName = task.getName();
+    AllTasks.removeTask(taskName, groupName);
+    Next7DaysTasks.removeTask(taskName, groupName);
+    TodaysTasks.removeTask(taskName, groupName);
+  });
+
+  // Remove the group from CreatedGroups
+  CreatedGroups.removeGroup(groupName);
+
+  // Remove the group div from the DOM
+  const groupDivToDelete = deleteButton.parentNode.parentNode;
+  groupDivToDelete.remove();  
 }
 
 export { addGroupToPage, addTaskToGroupPage };
