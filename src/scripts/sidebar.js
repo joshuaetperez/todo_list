@@ -5,7 +5,7 @@ import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from "./g
 import displayAllTasks from "./all-tasks.js";
 import displayToday from "./today.js";
 import displayNext7Days from "./next-7-days.js";
-import displayGroups, { addGroupToPage, addTaskToGroupPage } from "./groups.js";
+import displayGroups, { addGroupToPage, addTaskToGroupPage, insertDirectToAddTaskFormDiv } from "./groups.js";
 import CurrentTab from "./current-tab.js";
 import addTaskToPage from "./add-task-to-page.js";
 
@@ -263,7 +263,10 @@ function taskSubmitEvent(e) {
       taskGroup = Group(groupName);
       taskGroup.pushTask(newTask);
       CreatedGroups.pushGroup(taskGroup);
-      if (CurrentTab.getTab() === "Groups") addGroupToPage(taskGroup);
+      if (CurrentTab.getTab() === "Groups") {
+        addGroupToPage(taskGroup);
+        insertDirectToAddTaskFormDiv(groupName);
+      }
     }
     newTask.setGroupName(groupName);
     if (CurrentTab.getTab() === "Groups") addTaskToGroupPage(newTask, taskGroup);
@@ -316,7 +319,10 @@ function groupSubmitEvent(e) {
   else {
     const taskGroup = Group(groupName);
     CreatedGroups.pushGroup(taskGroup);
-    if (CurrentTab.getTab() === "Groups") addGroupToPage(taskGroup);
+    if (CurrentTab.getTab() === "Groups") {
+      addGroupToPage(taskGroup);
+      insertDirectToAddTaskFormDiv(groupName);
+    }
   }
 
   groupFormName.placeholder = "Name of Group";

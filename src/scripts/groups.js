@@ -30,7 +30,6 @@ function addGroupToPage(group) {
   const groupTaskContainer = document.createElement("div");
   const groupDeleteIcon = document.createElement("button");
   groupDiv.classList.add("group-div");
-  // groupNameContainer.classList.add("group-name-container");
   groupNameContainer.className = "unselectable group-name-container";
   groupTaskContainer.classList.add("group-task-container");
   groupNameDiv.classList.add("group-name");
@@ -55,6 +54,9 @@ function addAllTasksToGroupPage(group) {
   const groupTaskContainer = getGroupTaskContainer(groupName);
 
   groupArr.forEach(task => addTaskToPage(task, groupTaskContainer, false));
+
+  // Insert "Add Task" div below tasks
+  insertDirectToAddTaskFormDiv(groupName);
 }
 
 // Adds the task to the bottom of the Tasks section of the Group it belongs to
@@ -63,6 +65,28 @@ function addTaskToGroupPage(task, group) {
   const groupTaskContainer = getGroupTaskContainer(groupName);
 
   addTaskToPage(task, groupTaskContainer, false);
+}
+
+// Returns the groupTaskContainer of a group of the given name
+function getGroupTaskContainer(groupName) {
+  const groupDivs = document.querySelectorAll(".group-div");
+  for (let i = 0; i < groupDivs.length; i++) {
+    const groupDiv = groupDivs.item(i);
+    const groupDivName = groupDiv.firstChild.firstChild.textContent;
+    if (groupDivName === groupName) {
+      return groupDiv.lastChild;
+    }
+  }
+}
+
+// Inserts a "Add Task" div at the bottom of the groupTaskContainer
+function insertDirectToAddTaskFormDiv(groupName) {
+  const groupTaskContainer = getGroupTaskContainer(groupName);
+  const directDiv = document.createElement("div");
+  directDiv.classList.add("task-div");
+  directDiv.textContent = "+ Add Task";
+  directDiv.addEventListener("click", directToAddTaskForm);
+  groupTaskContainer.appendChild(directDiv);
 }
 
 // Clicking on the group div will show/hide its respective task list
@@ -82,11 +106,25 @@ function toggleGroupTaskList(e) {
   }
 }
 
-// "Add Task" (to Group) div event listener 
 // Shows the "Add Task" form (if not open already) and fills in the group name 
 function directToAddTaskForm(e) {
-  // Get group name (parent)
-  // 
+  // Get group name
+  const directDiv = e.target;
+  const groupName = directDiv.parentNode.previousSibling.firstChild.textContent;
+
+  // Open "Add Task" form (if not already open)
+  const taskForm = document.querySelector("#task-form");
+  const addTaskTab = document.querySelector("#add-task");
+  const taskFormName = document.querySelector("#fname-task");
+  const taskFormGroup = document.querySelector("#fgroup-task");
+  if (!addTaskTab.classList.contains("add-tab-border")) {
+    addTaskTab.classList.add("add-tab-border");
+    taskForm.style.display = 'flex'; 
+  }
+
+  // Change taskForm fields
+  taskFormName.value = "";
+  taskFormGroup.value = groupName;
 }
 
 // Delete Group button event listener
@@ -114,16 +152,4 @@ function deleteGroup(e) {
   groupDivToDelete.remove();  
 }
 
-// Returns the groupTaskContainer of a group of the given name
-function getGroupTaskContainer(groupName) {
-  const groupDivs = document.querySelectorAll(".group-div");
-  for (let i = 0; i < groupDivs.length; i++) {
-    const groupDiv = groupDivs.item(i);
-    const groupDivName = groupDiv.firstChild.firstChild.textContent;
-    if (groupDivName === groupName) {
-      return groupDiv.lastChild;
-    }
-  }
-}
-
-export { addGroupToPage, addTaskToGroupPage };
+export { addGroupToPage, addTaskToGroupPage, insertDirectToAddTaskFormDiv };

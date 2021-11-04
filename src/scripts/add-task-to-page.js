@@ -17,8 +17,8 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
   taskNameDiv.textContent = task.getName();
   taskDueDateP.textContent = task.getDueDate();
 
-  // If a group name was provided and needs to be displayed, add it to the leftSideDiv
-  if ((groupName !== "") && (addGroupName === true)) {
+  // If a group name was provided and needs to be displayed, add it to the rightSideDiv
+  if ((groupName !== "") && (addGroupName)) {
     groupNameP.classList.add("right-side-group");
     groupNameP.textContent = `${groupName}`;
   }
@@ -35,7 +35,14 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
 
   taskDiv.appendChild(leftSideDiv);
   taskDiv.appendChild(rightSideDiv);
-  containerDiv.appendChild(taskDiv);
+
+  if (addGroupName) {
+    containerDiv.appendChild(taskDiv);
+  }
+  else {
+    const directToAddTaskFormDiv = containerDiv.lastChild;
+    containerDiv.insertBefore(taskDiv, directToAddTaskFormDiv)
+  }
 }
 
 // Remove Task button event listener
