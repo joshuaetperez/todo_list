@@ -83,7 +83,7 @@ function getGroupTaskContainer(groupName) {
 function insertDirectToAddTaskFormDiv(groupName) {
   const groupTaskContainer = getGroupTaskContainer(groupName);
   const directDiv = document.createElement("div");
-  directDiv.classList.add("task-div");
+  directDiv.classList.add("direct-to-form-div");
   directDiv.textContent = "+ Add Task";
   directDiv.addEventListener("click", directToAddTaskForm);
   groupTaskContainer.appendChild(directDiv);
@@ -125,6 +125,22 @@ function directToAddTaskForm(e) {
   // Change taskForm fields
   taskFormName.value = "";
   taskFormGroup.value = groupName;
+
+  // Change color of "Add Task" to get the user's attention
+  alertDirectToForm();
+}
+
+// Change color of "Add Task" tab and form to yellow for a moment
+function alertDirectToForm() {
+  const addTaskTab = document.querySelector("#add-task");
+  const taskForm = document.querySelector("#task-form");
+
+  addTaskTab.classList.add("direct-to-form");
+  taskForm.classList.add("direct-to-form");
+  setTimeout(function() { 
+    addTaskTab.classList.remove("direct-to-form");
+    taskForm.classList.remove("direct-to-form");
+  }, 500);
 }
 
 // Delete Group button event listener

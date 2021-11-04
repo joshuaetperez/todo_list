@@ -160,6 +160,26 @@ ul {
   }
 }
 
+.direct-to-form {
+  animation-name: turn-yellow;
+  animation-duration: 0.5s;
+}
+
+@keyframes turn-yellow {
+  0% {
+    background-color: #3D9970;
+  }
+
+  50% {
+    background-color: #FFDC00;
+  }
+
+  100% {
+    background-color: #3D9970;
+  }
+}
+
+
 .form-button-div {
   display: flex;
   justify-content: center;
@@ -172,6 +192,14 @@ ul {
   justify-content: space-between;
   border-bottom: 1px #AAA solid;
 }
+
+.direct-to-form-div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px #AAA solid;
+  cursor: pointer;
+}
+
 
 .left-side-div {
   display: flex;

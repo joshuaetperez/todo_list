@@ -177,7 +177,7 @@ function addTabReset(type) {
   }
 }
 
-// Change color of "Add Task"/"Add Group" tab and form for a moment
+// Change color of "Add Task"/"Add Group" tab and form to red for a moment
 // Input: "task" or "group"
 function alertSubmitError(type) {
   if (type === "task") {
