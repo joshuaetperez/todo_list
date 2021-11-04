@@ -11,14 +11,14 @@ const Group = (name) => {
 
   const setName = (newName) => name = newName;
   const pushTask = (task) => taskArr.push(task);
-  const deleteTask = (task) => {
-    const index = taskArr.findIndex(elem => elem.getName() === task.getName());
+  const removeTask = (taskName) => {
+    const index = taskArr.findIndex(elem => elem.getName() === taskName);
     if (index >= 0) {
       taskArr.splice(index, 1);
     }
   };
 
-  return {getName, getArr, getTaskNames, setName, pushTask, deleteTask};
+  return {getName, getArr, getTaskNames, setName, pushTask, removeTask};
 }
 
 // Module that contains all created groups
@@ -26,13 +26,17 @@ const CreatedGroups = (() => {
   const CreatedGroupsArr = [];
 
   const getArr = () => CreatedGroupsArr;
-  const pushGroup = (group) => CreatedGroupsArr.push(group);
+  const getGroup = (groupName) => {
+    const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
+    return CreatedGroupsArr.find(hasGroupName);
+  }
   const getGroupIndex = (groupName) => {
     const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
     return CreatedGroupsArr.findIndex(hasGroupName);
   }
+  const pushGroup = (group) => CreatedGroupsArr.push(group);
 
-  return {getArr, pushGroup, getGroupIndex};
+  return {getArr, getGroup, getGroupIndex, pushGroup};
 })();
 
 // Module for all tasks
@@ -41,6 +45,12 @@ const AllTasks = (() => {
 
   const getArr = () => allTasksArr;
   const pushTask = (task) => allTasksArr.push(task);
+  const removeTask = (taskName, groupName) => {
+    const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
+    if (index >= 0) {
+      allTasksArr.splice(index, 1);
+    }
+  };
 
    // TEMPORARY DATA FOR DEBEUGGING
   const task1Date = format(new Date(2021, 10, 10), "MM/dd/yyyy");
@@ -73,7 +83,7 @@ const AllTasks = (() => {
   CreatedGroups.pushGroup(cleaningGroup);
   CreatedGroups.pushGroup(schoolGroup);
 
-  return {getArr, pushTask};
+  return {getArr, pushTask, removeTask};
 })();
 
 // Module for tasks due today
@@ -82,6 +92,12 @@ const TodaysTasks = (() => {
 
   const getArr = () => todaysTasksArr;
   const pushTask = (task) => todaysTasksArr.push(task);
+  const removeTask = (taskName, groupName) => {
+    const index = todaysTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
+    if (index >= 0) {
+      todaysTasksArr.splice(index, 1);
+    }
+  };
   const populateArr = () => {
     const todaysDate = startOfToday();
     const allTasksArr = AllTasks.getArr();
@@ -95,7 +111,7 @@ const TodaysTasks = (() => {
   // Call populateArr
   populateArr();
 
-  return {getArr, pushTask};
+  return {getArr, pushTask, removeTask};
 })();
 
 // Module for tasks due in the next 7 days
@@ -104,6 +120,12 @@ const Next7DaysTasks = (() => {
 
   const getArr = () => next7DaysTasksArr;
   const pushTask = (task) => next7DaysTasksArr.push(task);
+  const removeTask = (taskName, groupName) => {
+    const index = next7DaysTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
+    if (index >= 0) {
+      next7DaysTasksArr.splice(index, 1);
+    }
+  };
   const populateArr = () => {
     const todaysDate = startOfToday();
     const SevenDaysFromNowDate = addDays(todaysDate, 6);
@@ -118,7 +140,7 @@ const Next7DaysTasks = (() => {
   // Call populateArr
   populateArr();
 
-  return {getArr, pushTask};
+  return {getArr, pushTask, removeTask};
 })();
 
 export default Group;

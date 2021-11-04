@@ -173,10 +173,19 @@ ul {
   border-bottom: 1px #AAA solid;
 }
 
+.left-side-div {
+  display: flex;
+  gap: 5px;
+}
+
 .right-side-div {
   display: flex;
-  justify-content: space-between;
+  gap: 7px;
   margin-left: 30px;
+}
+
+.right-side-group {
+  color: #FF4136;
 }
 
 .remove {
