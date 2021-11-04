@@ -37,7 +37,6 @@ function addGroupToPage(group) {
   groupDeleteIcon.className = "remove material-icons";
   groupDeleteIcon.textContent = "delete";
   groupDeleteIcon.style.color = "grey";
-  groupDiv.id = groupName;
   groupNameDiv.textContent = groupName;
   groupNameContainer.addEventListener("click", toggleGroupTaskList);
   groupDeleteIcon.addEventListener("click", deleteGroup);
@@ -53,7 +52,7 @@ function addGroupToPage(group) {
 function addAllTasksToGroupPage(group) {
   const groupArr = group.getArr();
   const groupName = group.getName();
-  const groupTaskContainer = document.querySelector(`#${groupName}`).lastChild;
+  const groupTaskContainer = getGroupTaskContainer(groupName);
 
   groupArr.forEach(task => addTaskToPage(task, groupTaskContainer, false));
 }
@@ -61,7 +60,7 @@ function addAllTasksToGroupPage(group) {
 // Adds the task to the bottom of the Tasks section of the Group it belongs to
 function addTaskToGroupPage(task, group) {
   const groupName = group.getName();
-  const groupTaskContainer = document.querySelector(`#${groupName}`).lastChild;
+  const groupTaskContainer = getGroupTaskContainer(groupName);
 
   addTaskToPage(task, groupTaskContainer, false);
 }
@@ -81,6 +80,13 @@ function toggleGroupTaskList(e) {
     this.classList.add("open-group-task-list");
     groupTaskContainer.style.display = "block";
   }
+}
+
+// "Add Task" (to Group) div event listener 
+// Shows the "Add Task" form (if not open already) and fills in the group name 
+function directToAddTaskForm(e) {
+  // Get group name (parent)
+  // 
 }
 
 // Delete Group button event listener
@@ -106,6 +112,18 @@ function deleteGroup(e) {
   // Remove the group div from the DOM
   const groupDivToDelete = deleteButton.parentNode.parentNode;
   groupDivToDelete.remove();  
+}
+
+// Returns the groupTaskContainer of a group of the given name
+function getGroupTaskContainer(groupName) {
+  const groupDivs = document.querySelectorAll(".group-div");
+  for (let i = 0; i < groupDivs.length; i++) {
+    const groupDiv = groupDivs.item(i);
+    const groupDivName = groupDiv.firstChild.firstChild.textContent;
+    if (groupDivName === groupName) {
+      return groupDiv.lastChild;
+    }
+  }
 }
 
 export { addGroupToPage, addTaskToGroupPage };

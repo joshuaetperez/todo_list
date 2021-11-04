@@ -54,7 +54,7 @@ function removeTask(e) {
     groupName = rightSideDiv.firstChild.textContent;
   }
   else {
-    groupName = removeButton.parentNode.parentNode.parentNode.parentNode.id;
+    groupName = removeButton.parentNode.parentNode.parentNode.previousSibling.firstChild.textContent;
   }
 
   // Remove it from AllTasks, Next7DaysTasks, TodayTasks, and from its Group (if it belongs in one)
