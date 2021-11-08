@@ -4,6 +4,7 @@ import Group, { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./g
 // Input: a Task object, the DOM container, and a boolean specifying whether the Group name should be added next to the due date
 export default function addTaskToPage(task, containerDiv, addGroupName) {
   const taskDiv = document.createElement("div");
+  const contentDiv = document.createElement("div");
   const leftSideDiv = document.createElement("div");
   const rightSideDiv = document.createElement("div");
   const taskNameDiv = document.createElement("div");
@@ -12,6 +13,7 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
   const removeButton = document.createElement("button");
   const groupName = task.getGroupName();
   taskDiv.classList.add("task-div");
+  contentDiv.classList.add("content-div");
   leftSideDiv.classList.add("left-side-div");
   rightSideDiv.classList.add("right-side-div");
   taskNameDiv.textContent = task.getName();
@@ -25,16 +27,18 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
 
   removeButton.className = "remove unselectable material-icons";
   removeButton.textContent = "close";
-  removeButton.addEventListener("click", removeTask);
+  removeButton.addEventListener("click", deleteTask);
   removeButton.myParam = addGroupName;
 
   leftSideDiv.appendChild(taskNameDiv);
   if (addGroupName === true) rightSideDiv.appendChild(groupNameP);
   rightSideDiv.appendChild(taskDueDateP);
-  rightSideDiv.appendChild(removeButton);
 
-  taskDiv.appendChild(leftSideDiv);
-  taskDiv.appendChild(rightSideDiv);
+  contentDiv.appendChild(leftSideDiv);
+  contentDiv.appendChild(rightSideDiv);
+  taskDiv.appendChild(contentDiv);
+  taskDiv.appendChild(removeButton);
+  
 
   if (addGroupName) {
     containerDiv.appendChild(taskDiv);
@@ -45,11 +49,12 @@ export default function addTaskToPage(task, containerDiv, addGroupName) {
   }
 }
 
-// Remove Task button event listener
-function removeTask(e) {
+// Button event listener that deletes the task
+function deleteTask(e) {
   const removeButton = e.target;
-  const leftSideDiv = removeButton.parentNode.previousSibling;
-  const rightSideDiv = removeButton.parentNode;
+  const contentDiv = removeButton.previousSibling;
+  const leftSideDiv = contentDiv.firstChild;
+  const rightSideDiv = contentDiv.lastChild;
 
   // Get Task name
   const taskName = leftSideDiv.firstChild.textContent;
@@ -61,10 +66,11 @@ function removeTask(e) {
     groupName = rightSideDiv.firstChild.textContent;
   }
   else {
-    groupName = removeButton.parentNode.parentNode.parentNode.previousSibling.firstChild.textContent;
+    groupName = removeButton.parentNode.parentNode.previousSibling.firstChild.textContent;
   }
 
   // Remove it from AllTasks, Next7DaysTasks, TodayTasks, and from its Group (if it belongs in one)
+  console.log(groupName);
   AllTasks.removeTask(taskName, groupName);
   Next7DaysTasks.removeTask(taskName, groupName);
   TodaysTasks.removeTask(taskName, groupName);
@@ -74,6 +80,6 @@ function removeTask(e) {
   }
 
   // Remove it from the DOM of the page (Today, Next 7 Days, All Tasks, Groups)
-  const taskDivToRemove = removeButton.parentNode.parentNode;
+  const taskDivToRemove = removeButton.parentNode;
   taskDivToRemove.remove();  
 }

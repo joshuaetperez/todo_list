@@ -193,11 +193,10 @@ ul {
   border-bottom: 1px #AAA solid;
 }
 
-.direct-to-form-div {
+.content-div {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px #AAA solid;
-  cursor: pointer;
+  flex: 1;
 }
 
 
@@ -242,4 +241,11 @@ ul {
   display: none;
   background-color: #fff;
   margin-left: 20px;
+}
+
+.direct-to-form-div {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px #AAA solid;
+  cursor: pointer;
 }
