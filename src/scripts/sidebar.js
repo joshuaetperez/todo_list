@@ -274,21 +274,21 @@ function taskSubmitEvent(e) {
 
   // Insert the task to the AllTasks group
   AllTasks.pushTask(newTask);
-  if (CurrentTab.getTab() === "All Tasks") addTaskToPage(newTask, containerDiv, true);
+  if (CurrentTab.getTab() === "All Tasks") addTaskToPage(newTask, containerDiv);
 
   // If the task due date is within the next 7 days, insert the task to the Next7DaysTasks Group
   const todaysDate = startOfToday();
   const SevenDaysFromNowDate = addDays(todaysDate, 6);
   if (isWithinInterval(parseISO(taskFormDate.value), {start: todaysDate, end: SevenDaysFromNowDate})) {
     Next7DaysTasks.pushTask(newTask);
-    if (CurrentTab.getTab() === "Next 7 Days") addTaskToPage(newTask, containerDiv, true);
+    if (CurrentTab.getTab() === "Next 7 Days") addTaskToPage(newTask, containerDiv);
   }
 
   // If the task due date is today, insert the task to the TodaysTasks Group
   const todaysDateString = format(new Date(), "MM/dd/yyyy");
   if (newTask.getDueDate() === todaysDateString) {
     TodaysTasks.pushTask(newTask);
-    if (CurrentTab.getTab() === "Today") addTaskToPage(newTask, containerDiv, true);
+    if (CurrentTab.getTab() === "Today") addTaskToPage(newTask, containerDiv);
   }
 
   taskFormName.placeholder = "Name of Task";

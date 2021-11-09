@@ -48,6 +48,12 @@ const AllTasks = (() => {
   const allTasksArr = [];
 
   const getArr = () => allTasksArr;
+  const getTask = (taskName, groupName) => {
+    const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
+    if (index >= 0) {
+      return allTasksArr[index];
+    }
+  };
   const pushTask = (task) => allTasksArr.push(task);
   const removeTask = (taskName, groupName) => {
     const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
@@ -87,7 +93,7 @@ const AllTasks = (() => {
   CreatedGroups.pushGroup(cleaningGroup);
   CreatedGroups.pushGroup(schoolGroup);
 
-  return {getArr, pushTask, removeTask};
+  return {getArr, getTask, pushTask, removeTask};
 })();
 
 // Module for tasks due today
