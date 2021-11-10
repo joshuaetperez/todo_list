@@ -32,17 +32,22 @@ export default function addTaskToPage(task, containerDiv) {
     groupNameP.textContent = `${groupName}`;
   }
 
+  // Create a "Remove Task" button (X)
+  removeButton.className = "remove unselectable material-icons";
+  removeButton.textContent = "close";
+  removeButton.addEventListener("click", deleteTask);
+
   // If the task has been completed, add a cross over it
   if (task.getCompletedStatus()) {
     const brCross = document.createElement("hr");
     brCross.classList.add("hr-cross");
     crossDiv.insertBefore(brCross, crossDiv.firstChild);
   }
+  // Else, make the "Remove Task" button (X) invisible
+  else {
+    removeButton.classList.add("invisible");
+  }
   crossDiv.addEventListener("click", toggleCrossTask);
-
-  removeButton.className = "remove unselectable material-icons";
-  removeButton.textContent = "close";
-  removeButton.addEventListener("click", deleteTask);
 
   leftSideDiv.appendChild(taskNameDiv);
   if (!isGroupsPage) rightSideDiv.appendChild(groupNameP);
@@ -121,14 +126,17 @@ function toggleCrossTask(e) {
   const task = AllTasks.getTask(taskName, groupName);
   task.changeCompletedStatus();
 
-  // If the task has not been crossed out, cross it out
+  const removeButton = crossDiv.nextSibling;
+  // If the task has not been crossed out, cross it out and make the "Remove Task" button (X) invisible
   if (crossDiv.firstChild.tagName !== "HR") {
     const brCross = document.createElement("hr");
     brCross.classList.add("hr-cross");
     crossDiv.insertBefore(brCross, crossDiv.firstChild);
+    removeButton.classList.remove("invisible");
   }
-  // Else, remove the cross
+  // Else, remove the cross and make the "Remove Task" button (X) visible
   else {
     crossDiv.removeChild(crossDiv.firstChild);
+    removeButton.classList.add("invisible");
   }
 }

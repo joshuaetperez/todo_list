@@ -233,11 +233,20 @@ ul {
 .remove {
   border: 0;
   background-color: transparent;
-  cursor: pointer;
 }
 
 .remove:hover {
+  opacity: 1;
+  cursor: pointer;
   transform: scale(1.5, 1.5);
+}
+
+.visible {
+  opacity: 1;
+}
+
+.invisible {
+  opacity: 0;
 }
 
 .unselectable {
