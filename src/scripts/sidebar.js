@@ -214,20 +214,24 @@ function displayTaskForm(e) {
     addTabReset("task");
   }
   else {
+    const taskFormName = document.querySelector("#fname-task");
     this.classList.add("add-tab-border");
     taskForm.style.display = 'flex'; 
+    taskFormName.focus();
   }
 }
 
 // When the "Add Group" button is pressed, display the form or hide the form if it is currently displayed
 function displayGroupForm(e) {
   const groupForm = document.querySelector("#group-form");
+  const groupFormName = document.querySelector("#fname-group");
   if (this.classList.contains("add-tab-border")) {
     addTabReset("group");
   }
   else {
     this.classList.add("add-tab-border");
     groupForm.style.display = 'flex'; 
+    groupFormName.focus();
   }
 }
 
@@ -293,6 +297,7 @@ function taskSubmitEvent(e) {
 
   taskFormName.placeholder = "Name of Task";
   taskFormName.value = "";
+  taskFormName.focus();
 }
 
 // When the "Submit" button in the "Add Group" section is pressed, submit the form info
@@ -327,4 +332,5 @@ function groupSubmitEvent(e) {
 
   groupFormName.placeholder = "Name of Group";
   groupFormName.value = "";
+  groupFormName.focus();
 }

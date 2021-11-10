@@ -127,6 +127,9 @@ function directToAddTaskForm(e) {
   taskFormName.value = "";
   taskFormGroup.value = groupName;
 
+  // Put text cursor on "Name of Task" field
+  taskFormName.focus();
+
   // Change color of "Add Task" to get the user's attention
   alertDirectToForm();
 }
