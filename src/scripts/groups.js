@@ -53,10 +53,11 @@ function addAllTasksToGroupPage(group) {
   const groupName = group.getName();
   const groupTaskContainer = getGroupTaskContainer(groupName);
 
-  groupArr.forEach(task => addTaskToPage(task, groupTaskContainer, false));
-
-  // Insert "Add Task" div below tasks
+  // Insert "Add Task" div first
   insertDirectToAddTaskFormDiv(groupName);
+
+  // Groups tasks are inserted above the "Add Task" div in order
+  groupArr.forEach(task => addTaskToPage(task, groupTaskContainer));
 }
 
 // Adds the task to the bottom of the Tasks section of the Group it belongs to
@@ -64,7 +65,7 @@ function addTaskToGroupPage(task, group) {
   const groupName = group.getName();
   const groupTaskContainer = getGroupTaskContainer(groupName);
 
-  addTaskToPage(task, groupTaskContainer, false);
+  addTaskToPage(task, groupTaskContainer);
 }
 
 // Returns the groupTaskContainer of a group of the given name

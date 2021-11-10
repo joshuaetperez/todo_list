@@ -105,15 +105,10 @@ function toggleCrossTask(e) {
   const crossDiv = this;
   const contentDiv = crossDiv.lastChild;
 
-  // Get task name (contentDiv -> firstChild -> firstChild -> text)
-  // Get group name
-  //     1. If on a task page: contentDiv -> lastChild -> firstChild -> text
-  //     2. If on Groups page: crossDiv -> parentNode -> parentNode -> parentNode -> previousSibling -> firstChild -> text
-  // Find task from AllTasks and check its completeStatus
-  // Call changeCompletedStatus
   const taskName = contentDiv.firstChild.firstChild.textContent;
   let groupName;
 
+  // Gets value of groupName based on whether the user is on the "Groups" page or not
   const isGroupPage = CurrentTab.getTab() === "Groups"; 
   if (isGroupPage) {
     groupName = crossDiv.parentNode.parentNode.parentNode.previousSibling.firstChild.textContent;
@@ -122,6 +117,7 @@ function toggleCrossTask(e) {
     groupName = contentDiv.lastChild.firstChild.textContent;
   }
 
+  // Find task from AllTasks and check its completeStatus
   const task = AllTasks.getTask(taskName, groupName);
   task.changeCompletedStatus();
 

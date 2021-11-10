@@ -249,7 +249,7 @@ function taskSubmitEvent(e) {
   const newTaskDateString = format(parseISO(taskFormDate.value), "MM/dd/yyyy");
   const newTask = Task(taskName, "", newTaskDateString);
 
-  // If the user has input a group, insert the task to the associated Group
+  // If the user has input a group name, insert the task to the associated Group
   if (groupName !== "") {
     // If the group already exists, just insert the task in the group
     let taskGroup;
@@ -258,7 +258,7 @@ function taskSubmitEvent(e) {
       taskGroup = CreatedGroups.getArr()[groupIndex];
       taskGroup.pushTask(newTask);
     }
-    // Else, create a new group to insert the task in and insert the group in CreatedGroups
+    // Else, create a new Group to insert the Task in and insert the Group in CreatedGroups
     else {
       taskGroup = Group(groupName);
       taskGroup.pushTask(newTask);
@@ -272,11 +272,11 @@ function taskSubmitEvent(e) {
     if (CurrentTab.getTab() === "Groups") addTaskToGroupPage(newTask, taskGroup);
   }
 
-  // Insert the task to the AllTasks group
+  // Insert the Task to the AllTasks group
   AllTasks.pushTask(newTask);
   if (CurrentTab.getTab() === "All Tasks") addTaskToPage(newTask, containerDiv);
 
-  // If the task due date is within the next 7 days, insert the task to the Next7DaysTasks Group
+  // If the Task due date is within the next 7 days, insert the Task to the Next7DaysTasks Group
   const todaysDate = startOfToday();
   const SevenDaysFromNowDate = addDays(todaysDate, 6);
   if (isWithinInterval(parseISO(taskFormDate.value), {start: todaysDate, end: SevenDaysFromNowDate})) {
@@ -284,7 +284,7 @@ function taskSubmitEvent(e) {
     if (CurrentTab.getTab() === "Next 7 Days") addTaskToPage(newTask, containerDiv);
   }
 
-  // If the task due date is today, insert the task to the TodaysTasks Group
+  // If the Task due date is today, insert the Task to the TodaysTasks Group
   const todaysDateString = format(new Date(), "MM/dd/yyyy");
   if (newTask.getDueDate() === todaysDateString) {
     TodaysTasks.pushTask(newTask);
@@ -307,7 +307,7 @@ function groupSubmitEvent(e) {
     return;
   }
 
-  // If the group already exists, signal error and return
+  // If the Group already exists, signal error and return
   const groupIndex = CreatedGroups.getGroupIndex(groupName);
   if (groupIndex > -1) {
     alertSubmitError("group");
@@ -315,7 +315,7 @@ function groupSubmitEvent(e) {
     groupFormName.value = "";
     return;
   }
-  // Else, create a new group to insert in CreatedGroups
+  // Else, create a new Group to insert in CreatedGroups
   else {
     const taskGroup = Group(groupName);
     CreatedGroups.pushGroup(taskGroup);

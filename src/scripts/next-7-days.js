@@ -16,5 +16,5 @@ export default function displayNext7Days() {
 
   const containerDiv = document.querySelector(".main");
   const Next7DaysTasksArr = Next7DaysTasks.getArr();
-  Next7DaysTasksArr.forEach(task => addTaskToPage(task, containerDiv, true));
+  Next7DaysTasksArr.forEach(task => addTaskToPage(task, containerDiv));
 }

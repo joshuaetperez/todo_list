@@ -16,5 +16,5 @@ export default function displayAllTasks() {
 
   const containerDiv = document.querySelector(".main");
   const allTasksArr = AllTasks.getArr();
-  allTasksArr.forEach(task => addTaskToPage(task, containerDiv, true));
+  allTasksArr.forEach(task => addTaskToPage(task, containerDiv));
 }

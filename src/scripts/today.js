@@ -16,5 +16,5 @@ export default function displayToday() {
 
   const containerDiv = document.querySelector(".main");
   const TodaysTasksArr = TodaysTasks.getArr();
-  TodaysTasksArr.forEach(task => addTaskToPage(task, containerDiv, true));
+  TodaysTasksArr.forEach(task => addTaskToPage(task, containerDiv));
 }
