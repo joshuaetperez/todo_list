@@ -1,5 +1,5 @@
-import Group, { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
-import CurrentTab from "./current-tab.js";
+import { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
+import { CurrentTab } from "./tab-pages.js";
 
 // Adds a Task to the bottom of the specified container
 export default function addTaskToPage(task, containerDiv) {

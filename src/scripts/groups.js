@@ -1,10 +1,7 @@
 import '../style.css';
-import {format} from "date-fns";
-import Task from "./task.js";
-import Group, { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
-import CurrentTab from "./current-tab.js";
-import resetPage from "./reset-page.js";
+import { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
 import addTaskToPage from "./add-task-to-page.js";
+import { CurrentTab, resetPage } from "./tab-pages.js";
 
 // Sets up the "Groups" page
 export default function displayGroups() {
