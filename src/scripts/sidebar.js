@@ -97,6 +97,11 @@ export default function displaySidebar() {
   groupFormSubmit.value = "Submit";
   groupFormCancel.value = "Cancel";
 
+  // Invisible form field so that the pressing "Enter" on the "Add Groups" form does not submit the form and refresh the page
+  const bogusFormField = document.createElement("input");
+  bogusFormField.setAttribute("type", "text");
+  bogusFormField.style.display = "none";
+
   // Adds an event listener to the "Add Task" button and the "Add Group" button which cau ses the form to appear
   addTaskTab.addEventListener("click", displayTaskForm);
   addGroupTab.addEventListener("click", displayGroupForm);
@@ -108,6 +113,12 @@ export default function displaySidebar() {
   // Adds an event listener to the "Cancel" button hides the form
   taskFormCancel.addEventListener("click", () => addTabReset("task"));
   groupFormCancel.addEventListener("click", () => addTabReset("group"));
+
+  // Adds an event listener to the form fields that submits the form when "Enter" is pressed
+  taskFormName.addEventListener("keyup", submitWithEnter);
+  taskFormGroup.addEventListener("keyup", submitWithEnter);
+  taskFormDate.addEventListener("keyup", submitWithEnter);
+  groupFormName.addEventListener("keyup", submitWithEnter);
 
   // Adds an event listener to the "Today", "Next 7 Days", "All Tasks", and "Group" tabs that open their respective pages
   allTasksTab.addEventListener("click", () => displayAllTasks());
@@ -129,6 +140,7 @@ export default function displaySidebar() {
   taskFormDiv.appendChild(taskForm);
 
   groupForm.appendChild(groupFormName);
+  groupForm.appendChild(bogusFormField);
   groupFormButtonDiv.appendChild(groupFormSubmit);
   groupFormButtonDiv.appendChild(groupFormCancel);
   groupForm.appendChild(groupFormButtonDiv);
@@ -196,7 +208,6 @@ function alertSubmitError(type) {
   else if (type === "group") {
     const addGroupTab = document.querySelector("#add-group");
     const groupForm = document.querySelector("#group-form");
-    const groupFormName = document.querySelector("#fname-group");
   
     addGroupTab.classList.add("missing-name-field");
     groupForm.classList.add("missing-name-field");
@@ -334,3 +345,17 @@ function groupSubmitEvent(e) {
   groupFormName.value = "";
   groupFormName.focus();
 }
+
+// When the user presses the "Enter" key while on one of the form fields, the form will submit
+function submitWithEnter(e) {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    const form = this.parentNode;
+    if (form.id === "task-form") {
+      document.querySelector("#fsubmit-task").click();
+    }
+    else if (form.id === "group-form") {
+      document.querySelector("#fsubmit-group").click();
+    }
+  }
+};
