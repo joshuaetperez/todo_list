@@ -61,6 +61,13 @@ const AllTasks = (() => {
       allTasksArr.splice(index, 1);
     }
   };
+  const isDuplicate = (taskName, groupName) => {
+    const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
+    if (index >= 0) {
+      return true;
+    }
+    return false;
+  };
 
    // TEMPORARY DATA FOR DEBEUGGING
   const task1Date = format(new Date(2021, 10, 10), "MM/dd/yyyy");
@@ -93,7 +100,7 @@ const AllTasks = (() => {
   CreatedGroups.pushGroup(cleaningGroup);
   CreatedGroups.pushGroup(schoolGroup);
 
-  return {getArr, getTask, pushTask, removeTask};
+  return {getArr, getTask, pushTask, removeTask, isDuplicate};
 })();
 
 // Module for tasks due today

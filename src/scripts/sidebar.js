@@ -18,7 +18,7 @@ export default function displaySidebar() {
   const sidebarDiv = document.createElement("div");
   const taskList = document.createElement("ul");
   const groupList = document.createElement("ul");
-  sidebarDiv.classList.add("sidebar");
+  sidebarDiv.className = "sidebar unselectable";
   taskList.classList.add("task-list");
   groupList.classList.add("group-list");
 
@@ -192,39 +192,31 @@ function addTabReset(type) {
 // Change color of "Add Task"/"Add Group" tab and form to red for a moment
 // Input: "task" or "group"
 function alertSubmitError(type) {
+  let addTab;
+  let form;
   if (type === "task") {
-    const addTaskTab = document.querySelector("#add-task");
-    const taskForm = document.querySelector("#task-form");
-    const taskFormName = document.querySelector("#fname-task");
-
-    addTaskTab.classList.add("missing-name-field");
-    taskForm.classList.add("missing-name-field");
-    setTimeout(function() { 
-      addTaskTab.classList.remove("missing-name-field");
-      taskForm.classList.remove("missing-name-field");
-    }, 500);
-    taskFormName.placeholder = "Must include a Task name";
+    addTab = document.querySelector("#add-task");
+    form = document.querySelector("#task-form");
   }
   else if (type === "group") {
-    const addGroupTab = document.querySelector("#add-group");
-    const groupForm = document.querySelector("#group-form");
-  
-    addGroupTab.classList.add("missing-name-field");
-    groupForm.classList.add("missing-name-field");
-    setTimeout(function() { 
-      addGroupTab.classList.remove("missing-name-field");
-      groupForm.classList.remove("missing-name-field");
-    }, 500);
+    addTab = document.querySelector("#add-group");
+    form = document.querySelector("#group-form");
   }
+  addTab.classList.add("missing-name-field");
+  form.classList.add("missing-name-field");
+  setTimeout(function() { 
+    addTab.classList.remove("missing-name-field");
+    form.classList.remove("missing-name-field");
+  }, 500);
 }
 
 // When the "Add Task" button is pressed, display the form or hide the form if it is currently displayed
 function displayTaskForm(e) {
-  const taskForm = document.querySelector("#task-form");
   if (this.classList.contains("add-tab-border")) {
     addTabReset("task");
   }
   else {
+    const taskForm = document.querySelector("#task-form");
     const taskFormName = document.querySelector("#fname-task");
     this.classList.add("add-tab-border");
     taskForm.style.display = 'flex'; 
@@ -234,12 +226,12 @@ function displayTaskForm(e) {
 
 // When the "Add Group" button is pressed, display the form or hide the form if it is currently displayed
 function displayGroupForm(e) {
-  const groupForm = document.querySelector("#group-form");
-  const groupFormName = document.querySelector("#fname-group");
   if (this.classList.contains("add-tab-border")) {
     addTabReset("group");
   }
   else {
+    const groupForm = document.querySelector("#group-form");
+    const groupFormName = document.querySelector("#fname-group");
     this.classList.add("add-tab-border");
     groupForm.style.display = 'flex'; 
     groupFormName.focus();
@@ -258,6 +250,16 @@ function taskSubmitEvent(e) {
   // If task name field is empty, signal error and return
   if (taskName === "") {
     alertSubmitError("task");
+    taskFormName.placeholder = "Must include a Task name";
+    return;
+  }
+
+  // If the Group already exists, signal error and return
+  const isTaskDuplicate = AllTasks.isDuplicate(taskName, groupName);
+  if (isTaskDuplicate) {
+    alertSubmitError("task");
+    taskFormName.placeholder = "Task already exists";
+    taskFormName.value = "";
     return;
   }
 
@@ -349,12 +351,11 @@ function groupSubmitEvent(e) {
 // When the user presses the "Enter" key while on one of the form fields, the form will submit
 function submitWithEnter(e) {
   if (e.keyCode === 13) {
-    e.preventDefault();
-    const form = this.parentNode;
-    if (form.id === "task-form") {
+    const formID = this.parentNode.id;
+    if (formID === "task-form") {
       document.querySelector("#fsubmit-task").click();
     }
-    else if (form.id === "group-form") {
+    else if (formID === "group-form") {
       document.querySelector("#fsubmit-group").click();
     }
   }
