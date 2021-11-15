@@ -70,19 +70,19 @@ const AllTasks = (() => {
   };
 
    // TEMPORARY DATA FOR DEBEUGGING
-  const task1Date = format(new Date(2021, 10, 10), "MM/dd/yyyy");
+  const task1Date = new Date(2021, 10, 10);
   const task1 = Task("Take out the trash", "", task1Date);
-  const task2Date = format(new Date(2021, 10, 11), "MM/dd/yyyy");
+  const task2Date = new Date(2021, 10, 11);
   const task2 = Task("Do the dishes", "Cleaning", task2Date);
-  const task3Date = format(new Date(2021, 10, 12), "MM/dd/yyyy");
+  const task3Date = new Date(2021, 10, 12);
   const task3 = Task("Clean the house", "Cleaning", task3Date);
-  const task4Date = format(new Date(2021, 10, 13), "MM/dd/yyyy");
+  const task4Date = new Date(2021, 10, 13);
   const task4 = Task("Go grocery shopping", "", task4Date);
-  const task5Date = format(new Date(2021, 10, 14), "MM/dd/yyyy");
+  const task5Date = new Date(2021, 10, 14);
   const task5 = Task("Do homework", "", task5Date);
-  const task6Date = format(new Date(), "MM/dd/yyyy");
+  const task6Date = startOfToday();
   const task6 = Task("Clip fingernails", "School", task6Date);
-  const task7Date = format(new Date(), "MM/dd/yyyy");
+  const task7Date = startOfToday();
   const task7 = Task("Read from the textbook", "School", task7Date);
   allTasksArr.push(task1);
   allTasksArr.push(task2);
@@ -120,8 +120,8 @@ const TodaysTasks = (() => {
     const allTasksArr = AllTasks.getArr();
 
     allTasksArr.forEach(task => {
-      const parsedDueDate = parse(task.getDueDate(), 'MM/dd/yyyy', new Date());
-      if (isEqual(parsedDueDate, todaysDate)) todaysTasksArr.push(task);
+      const taskDueDate = task.getDueDate();
+      if (isEqual(taskDueDate, todaysDate)) todaysTasksArr.push(task);
     });
   }
 
@@ -149,8 +149,8 @@ const Next7DaysTasks = (() => {
     const allTasksArr = AllTasks.getArr();
 
     allTasksArr.forEach(task => {
-      const parsedDueDate = parse(task.getDueDate(), 'MM/dd/yyyy', new Date());
-      if (isWithinInterval(parsedDueDate, {start: todaysDate, end: SevenDaysFromNowDate})) next7DaysTasksArr.push(task);
+      const taskDueDate = task.getDueDate();
+      if (isWithinInterval(taskDueDate, {start: todaysDate, end: SevenDaysFromNowDate})) next7DaysTasksArr.push(task);
     });
   }
 

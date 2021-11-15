@@ -260,7 +260,8 @@ function taskSubmitEvent(e) {
     return;
   }
 
-  const newTaskDateString = format(parseISO(taskFormDate.value), "MM/dd/yyyy");
+  // Create the task
+  const newTaskDateString = parseISO(taskFormDate.value);
   const newTask = Task(taskName, "", newTaskDateString);
 
   // If the user has input a group name, insert the task to the associated Group
@@ -300,7 +301,7 @@ function taskSubmitEvent(e) {
 
   // If the Task due date is today, insert the Task to the TodaysTasks Group
   const todaysDateString = format(new Date(), "MM/dd/yyyy");
-  if (newTask.getDueDate() === todaysDateString) {
+  if (newTask.getDueDateString() === todaysDateString) {
     TodaysTasks.pushTask(newTask);
     if (CurrentTab.getTab() === "Today") addTaskToPage(newTask, containerDiv);
   }

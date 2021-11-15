@@ -15,7 +15,7 @@ export default function addTaskToPage(task, containerDiv) {
   const removeButton = document.createElement("button");
   const taskName = task.getName();
   const groupName = task.getGroupName();
-  const taskDueDate = task.getDueDate();
+  const taskDueDateString = task.getDueDateString();
   taskDiv.classList.add("task-div");
   taskFlexDiv.classList.add("task-flex-div");
   crossDiv.classList.add("cross-div");
@@ -23,7 +23,7 @@ export default function addTaskToPage(task, containerDiv) {
   leftSideDiv.classList.add("left-side-div");
   rightSideDiv.classList.add("right-side-div");
   taskNameDiv.textContent = taskName;
-  taskDueDateP.textContent = taskDueDate;
+  taskDueDateP.textContent = taskDueDateString;
 
   const isGroupsPage = CurrentTab.getTab() === "Groups";
   // If a Group name was provided and user is not on the "Groups" page, add the Group name to the right side of the Task div 
