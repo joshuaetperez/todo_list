@@ -65,6 +65,15 @@ ul {
   margin: 0;
 }
 
+button {
+  border: 0;
+  background-color: transparent;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 #content {
   display: flex;
   flex-direction: column;
@@ -230,14 +239,8 @@ ul {
   color: #FF4136;
 }
 
-.remove {
-  border: 0;
-  background-color: transparent;
-}
-
 .remove:hover {
   opacity: 1;
-  cursor: pointer;
   transform: scale(1.5, 1.5);
 }
 
@@ -268,5 +271,17 @@ ul {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px #AAA solid;
+  cursor: pointer;
+}
+
+.titleDiv {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sortDiv {
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
 }

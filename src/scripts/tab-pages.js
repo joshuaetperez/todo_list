@@ -19,12 +19,38 @@ function resetPage() {
   document.querySelector(".main").innerHTML = "";
 }
 
+// Sets up the title header on the top of the page with a "Sort" field
+function displayTitle(tabPage) {
+  const containerDiv = document.querySelector(".main");
+  const titleDiv = document.createElement("div");
+  const titleHeader = document.createElement("h3");
+  const sortDiv = document.createElement("div");
+  const sortLabel = document.createElement("div");
+  const sortDirection = document.createElement("button");
+
+  titleDiv.classList.add("titleDiv");
+  sortDiv.classList.add("sortDiv");
+  titleHeader.textContent = `${tabPage}`;
+  sortLabel.textContent = "Due Date";
+
+  sortDirection.className = "sort-direction unselectable material-icons";
+  sortDirection.textContent = "expand_more";
+
+  sortDiv.appendChild(sortLabel);
+  sortDiv.appendChild(sortDirection);
+  sortDiv.addEventListener("click", sortEntries);
+  titleDiv.appendChild(titleHeader);
+  titleDiv.appendChild(sortDiv);
+  containerDiv.appendChild(titleDiv);
+}
+
 // Sets up the "All Tasks" page
 function displayAllTasks() {
   if (CurrentTab.getTab() === "All Tasks") {
     return;
   }
   resetPage();
+  displayTitle("All Tasks");
   CurrentTab.setTab("All Tasks");
 
   const containerDiv = document.querySelector(".main");
@@ -38,6 +64,7 @@ function displayToday() {
     return;
   }
   resetPage();
+  displayTitle("Today");
   CurrentTab.setTab("Today");
 
   const containerDiv = document.querySelector(".main");
@@ -51,6 +78,7 @@ function displayNext7Days() {
     return;
   }
   resetPage();
+  displayTitle("Next 7 Days");
   CurrentTab.setTab("Next 7 Days");
 
   const containerDiv = document.querySelector(".main");
@@ -58,4 +86,15 @@ function displayNext7Days() {
   Next7DaysTasksArr.forEach(task => addTaskToPage(task, containerDiv));
 };
 
-export {CurrentTab, resetPage, displayAllTasks, displayToday, displayNext7Days};
+// Displays tasks/groups based in either ascending or descending order
+function sortEntries(e) {
+  const sortDirection = document.querySelector(".sort-direction");
+  if (sortDirection.textContent === "expand_more") {
+    sortDirection.textContent = "expand_less";
+  }
+  else if (sortDirection.textContent === "expand_less") {
+    sortDirection.textContent = "expand_more";
+  }
+}
+
+export {CurrentTab, resetPage, displayTitle, displayAllTasks, displayToday, displayNext7Days};

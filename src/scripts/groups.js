@@ -1,7 +1,7 @@
 import '../style.css';
 import { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
 import addTaskToPage from "./add-task-to-page.js";
-import { CurrentTab, resetPage } from "./tab-pages.js";
+import { CurrentTab, resetPage, displayTitle } from "./tab-pages.js";
 
 // Sets up the "Groups" page
 export default function displayGroups() {
@@ -9,7 +9,9 @@ export default function displayGroups() {
     return;
   }
   resetPage();
+  displayTitle("Groups");
   CurrentTab.setTab("Groups");
+
   const CreatedGroupsArr = CreatedGroups.getArr();
   CreatedGroupsArr.forEach(group => {
     addGroupToPage(group);
