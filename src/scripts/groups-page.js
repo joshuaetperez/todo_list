@@ -8,9 +8,9 @@ export default function displayGroups() {
   if (CurrentTab.getTab() === "Groups") {
     return;
   }
+  CurrentTab.setTab("Groups");
   resetPage();
   displayTitle("Groups");
-  CurrentTab.setTab("Groups");
 
   const CreatedGroupsArr = CreatedGroups.getArr();
   CreatedGroupsArr.forEach(group => {

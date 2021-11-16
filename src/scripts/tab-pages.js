@@ -24,24 +24,29 @@ function displayTitle(tabPage) {
   const containerDiv = document.querySelector(".main");
   const titleDiv = document.createElement("div");
   const titleHeader = document.createElement("h3");
-  const sortDiv = document.createElement("div");
-  const sortLabel = document.createElement("div");
-  const sortDirection = document.createElement("button");
-
   titleDiv.classList.add("titleDiv");
-  sortDiv.classList.add("sortDiv");
   titleHeader.textContent = `${tabPage}`;
-  sortLabel.textContent = "Due Date";
 
-  sortDirection.className = "sort-direction unselectable material-icons";
-  sortDirection.textContent = "expand_more";
-
-  sortDiv.appendChild(sortLabel);
-  sortDiv.appendChild(sortDirection);
-  sortDiv.addEventListener("click", sortEntries);
-  titleDiv.appendChild(titleHeader);
-  titleDiv.appendChild(sortDiv);
-  containerDiv.appendChild(titleDiv);
+  if (CurrentTab.getTab() === "Today") {
+    titleDiv.appendChild(titleHeader);
+    containerDiv.appendChild(titleDiv);
+  }
+  else {
+    const sortDiv = document.createElement("div");
+    const sortLabel = document.createElement("div");
+    const sortDirection = document.createElement("button");
+    sortDiv.classList.add("sortDiv");
+    sortLabel.textContent = "Due Date";
+    sortDirection.className = "sort-direction unselectable material-icons";
+    sortDirection.textContent = "expand_more";
+  
+    sortDiv.appendChild(sortLabel);
+    sortDiv.appendChild(sortDirection);
+    sortDiv.addEventListener("click", sortEntries);
+    titleDiv.appendChild(titleHeader);
+    titleDiv.appendChild(sortDiv);
+    containerDiv.appendChild(titleDiv);
+  }
 }
 
 // Sets up the "All Tasks" page
@@ -49,9 +54,9 @@ function displayAllTasks() {
   if (CurrentTab.getTab() === "All Tasks") {
     return;
   }
+  CurrentTab.setTab("All Tasks");
   resetPage();
   displayTitle("All Tasks");
-  CurrentTab.setTab("All Tasks");
 
   const containerDiv = document.querySelector(".main");
   const allTasksArr = AllTasks.getArr();
@@ -63,9 +68,9 @@ function displayToday() {
   if (CurrentTab.getTab() === "Today") {
     return;
   }
+  CurrentTab.setTab("Today");
   resetPage();
   displayTitle("Today");
-  CurrentTab.setTab("Today");
 
   const containerDiv = document.querySelector(".main");
   const TodaysTasksArr = TodaysTasks.getArr();
@@ -77,9 +82,9 @@ function displayNext7Days() {
   if (CurrentTab.getTab() === "Next 7 Days") {
     return;
   }
+  CurrentTab.setTab("Next 7 Days");
   resetPage();
   displayTitle("Next 7 Days");
-  CurrentTab.setTab("Next 7 Days");
 
   const containerDiv = document.querySelector(".main");
   const Next7DaysTasksArr = Next7DaysTasks.getArr();
