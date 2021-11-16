@@ -2,7 +2,7 @@ import '../style.css';
 import {addDays, format, isWithinInterval, parseISO, startOfToday} from "date-fns";
 import Task from "./task.js";
 import Group, { CreatedGroups, AllTasks, TodaysTasks, Next7DaysTasks } from "./group.js";
-import displayGroups, { addGroupToPage, addTaskToGroupPage, insertDirectToAddTaskFormDiv } from "./groups.js";
+import displayGroups, { addGroupToPage, addTaskToGroupPage, insertDirectToAddTaskFormDiv } from "./groups-page.js";
 import addTaskToPage from "./add-task-to-page.js";
 import {CurrentTab, displayAllTasks, displayToday, displayNext7Days} from "./tab-pages.js";
 

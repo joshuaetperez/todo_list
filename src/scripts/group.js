@@ -1,4 +1,4 @@
-import {addDays, format, isEqual, isWithinInterval, parse, startOfToday} from "date-fns";
+import {addDays, compareAsc, isEqual, isWithinInterval, startOfToday} from "date-fns";
 import Task from "./task.js";
 
 // Group factory function
@@ -10,7 +10,17 @@ const Group = (name) => {
   const getTaskNames = () => taskArr.forEach(task => console.log(task.getName()));
 
   const setName = (newName) => name = newName;
-  const pushTask = (task) => taskArr.push(task);
+  const pushTask = (task) => {
+    const taskDueDate = task.getDueDate();
+    for (let i = 0; i < taskArr.length; i++) {
+      const elemDueDate = taskArr[i].getDueDate();
+      if (compareAsc(taskDueDate, elemDueDate) === -1) {
+        taskArr.splice(i, 0, task);
+        return;
+      }
+    }
+    taskArr.push(task);
+  };
   const removeTask = (taskName) => {
     const index = taskArr.findIndex(elem => elem.getName() === taskName);
     if (index >= 0) {
@@ -54,7 +64,17 @@ const AllTasks = (() => {
       return allTasksArr[index];
     }
   };
-  const pushTask = (task) => allTasksArr.push(task);
+  const pushTask = (task) => {
+    const taskDueDate = task.getDueDate();
+    for (let i = 0; i < allTasksArr.length; i++) {
+      const elemDueDate = allTasksArr[i].getDueDate();
+      if (compareAsc(taskDueDate, elemDueDate) === -1) {
+        allTasksArr.splice(i, 0, task);
+        return;
+      }
+    }
+    allTasksArr.push(task);
+  };
   const removeTask = (taskName, groupName) => {
     const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
     if (index >= 0) {
@@ -70,27 +90,27 @@ const AllTasks = (() => {
   };
 
    // TEMPORARY DATA FOR DEBEUGGING
-  const task1Date = new Date(2021, 10, 10);
+  const task1Date = new Date(2021, 10, 15);
   const task1 = Task("Take out the trash", "", task1Date);
-  const task2Date = new Date(2021, 10, 11);
+  const task2Date = new Date(2021, 10, 13);
   const task2 = Task("Do the dishes", "Cleaning", task2Date);
-  const task3Date = new Date(2021, 10, 12);
+  const task3Date = new Date(2021, 10, 11);
   const task3 = Task("Clean the house", "Cleaning", task3Date);
-  const task4Date = new Date(2021, 10, 13);
+  const task4Date = new Date(2021, 10, 14);
   const task4 = Task("Go grocery shopping", "", task4Date);
-  const task5Date = new Date(2021, 10, 14);
+  const task5Date = new Date(2021, 10, 12);
   const task5 = Task("Do homework", "", task5Date);
   const task6Date = startOfToday();
   const task6 = Task("Clip fingernails", "School", task6Date);
   const task7Date = startOfToday();
   const task7 = Task("Read from the textbook", "School", task7Date);
-  allTasksArr.push(task1);
-  allTasksArr.push(task2);
-  allTasksArr.push(task3);
-  allTasksArr.push(task4);
-  allTasksArr.push(task5);
-  allTasksArr.push(task6);
-  allTasksArr.push(task7);
+  pushTask(task1);
+  pushTask(task2);
+  pushTask(task3);
+  pushTask(task4);
+  pushTask(task5);
+  pushTask(task6);
+  pushTask(task7);
   const cleaningGroup = Group("Cleaning");
   const schoolGroup = Group("School");
   cleaningGroup.pushTask(task2);
@@ -136,7 +156,17 @@ const Next7DaysTasks = (() => {
   const next7DaysTasksArr = [];
 
   const getArr = () => next7DaysTasksArr;
-  const pushTask = (task) => next7DaysTasksArr.push(task);
+  const pushTask = (task) => {
+    const taskDueDate = task.getDueDate();
+    for (let i = 0; i < next7DaysTasksArr.length; i++) {
+      const elemDueDate = next7DaysTasksArr[i].getDueDate();
+      if (compareAsc(taskDueDate, elemDueDate) === -1) {
+        next7DaysTasksArr.splice(i, 0, task);
+        return;
+      }
+    }
+    next7DaysTasksArr.push(task);
+  };
   const removeTask = (taskName, groupName) => {
     const index = next7DaysTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
     if (index >= 0) {
