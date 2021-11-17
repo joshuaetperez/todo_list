@@ -77,9 +77,12 @@ const AllTasks = (() => {
   };
   const pushTask = (task) => {
     const taskDueDate = task.getDueDate();
+    const groupName = task.getGroupName();
     for (let i = 0; i < allTasksArr.length; i++) {
-      const elemDueDate = allTasksArr[i].getDueDate();
-      if (compareAsc(taskDueDate, elemDueDate) === -1) {
+      const elem = allTasksArr[i];
+      const elemDueDate = elem.getDueDate();
+      const elemGroupName = elem.getGroupName();
+      if (((compareAsc(taskDueDate, elemDueDate) === 0) && (groupName < elemGroupName)) || (compareAsc(taskDueDate, elemDueDate) === -1)) {
         allTasksArr.splice(i, 0, task);
         return;
       }
@@ -139,7 +142,18 @@ const TodaysTasks = (() => {
   const todaysTasksArr = [];
 
   const getArr = () => todaysTasksArr;
-  const pushTask = (task) => todaysTasksArr.push(task);
+  const pushTask = (task) => {
+    const groupName = task.getGroupName();
+    for (let i = 0; i < todaysTasksArr.length; i++) {
+      const elem = todaysTasksArr[i];
+      const elemGroupName = elem.getGroupName();
+      if (groupName < elemGroupName) {
+        todaysTasksArr.splice(i, 0, task);
+        return;
+      }
+    }
+    todaysTasksArr.push(task);
+  };
   const removeTask = (taskName, groupName) => {
     const index = todaysTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
     if (index >= 0) {
@@ -169,9 +183,12 @@ const Next7DaysTasks = (() => {
   const getArr = () => next7DaysTasksArr;
   const pushTask = (task) => {
     const taskDueDate = task.getDueDate();
+    const groupName = task.getGroupName();
     for (let i = 0; i < next7DaysTasksArr.length; i++) {
-      const elemDueDate = next7DaysTasksArr[i].getDueDate();
-      if (compareAsc(taskDueDate, elemDueDate) === -1) {
+      const elem = next7DaysTasksArr[i];
+      const elemDueDate = elem.getDueDate();
+      const elemGroupName = elem.getGroupName();
+      if (((compareAsc(taskDueDate, elemDueDate) === 0) && (groupName < elemGroupName)) || (compareAsc(taskDueDate, elemDueDate) === -1)) {
         next7DaysTasksArr.splice(i, 0, task);
         return;
       }
