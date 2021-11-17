@@ -1,4 +1,4 @@
-import {format, parseISO} from "date-fns";
+import {format} from "date-fns";
 
 // Task factory function
 const Task = (name, groupName, dueDate) => {

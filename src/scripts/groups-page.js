@@ -1,23 +1,7 @@
-import '../style.css';
+import "../style.css";
 import { AllTasks, TodaysTasks, Next7DaysTasks, CreatedGroups } from "./group.js"
 import addTaskToPage from "./add-task-to-page.js";
-import { CurrentTab, resetPage, displayTitle } from "./tab-pages.js";
-
-// Sets up the "Groups" page
-export default function displayGroups() {
-  if (CurrentTab.getTab() === "Groups") {
-    return;
-  }
-  CurrentTab.setTab("Groups");
-  resetPage();
-  displayTitle("Groups");
-
-  const CreatedGroupsArr = CreatedGroups.getArr();
-  CreatedGroupsArr.forEach(group => {
-    addGroupToPage(group);
-    addAllTasksToGroupPage(group);
-  });
-}
+import {CurrentSortDirection } from "./tab-pages.js";
 
 // Adds a Group to the bottom of the "Groups" page
 function addGroupToPage(group) {
@@ -39,6 +23,11 @@ function addGroupToPage(group) {
   groupNameContainer.addEventListener("click", toggleGroupTaskList);
   groupDeleteIcon.addEventListener("click", deleteGroup);
 
+  if (group.isTaskListOpen()) {
+    groupNameContainer.classList.add(".open-group-task-list");
+    groupTaskContainer.style.display = "block";
+  }
+
   groupNameContainer.appendChild(groupNameDiv);
   groupNameContainer.appendChild(groupDeleteIcon);
   groupDiv.appendChild(groupNameContainer);
@@ -55,8 +44,16 @@ function addAllTasksToGroupPage(group) {
   // Insert "Add Task" div first
   insertDirectToAddTaskFormDiv(groupName);
 
-  // Groups tasks are inserted above the "Add Task" div in order
-  groupArr.forEach(task => addTaskToPage(task, groupTaskContainer));
+  // Groups tasks are inserted above the "Add Task" div based on sort order
+  if (CurrentSortDirection.isAscOrder()) {
+    groupArr.forEach(task => addTaskToPage(task, groupTaskContainer));
+  }
+  else {
+    for (let i = groupArr.length - 1; i >= 0; i--) {
+      const task = groupArr[i];
+      addTaskToPage(task, groupTaskContainer);
+    }
+  }
 }
 
 // Adds the task to the bottom of the Tasks section of the Group it belongs to
@@ -96,7 +93,10 @@ function toggleGroupTaskList(e) {
     return;
   }
   const groupTaskContainer = this.nextSibling;
-  if (this.classList.contains("open-group-task-list")) {
+  const groupName = this.firstChild.textContent;
+  const group = CreatedGroups.getGroup(groupName);
+  const isGroupTaskListOpen = group.isTaskListOpen();
+  if (isGroupTaskListOpen) {
     this.classList.remove("open-group-task-list");
     groupTaskContainer.style.display = "none";
   }
@@ -104,6 +104,7 @@ function toggleGroupTaskList(e) {
     this.classList.add("open-group-task-list");
     groupTaskContainer.style.display = "block";
   }
+  group.toggleTaskListStatus();
 }
 
 // Shows the "Add Task" form (if not open already) and fills in the group name 
@@ -171,4 +172,4 @@ function deleteGroup(e) {
   groupDivToDelete.remove();  
 }
 
-export { addGroupToPage, addTaskToGroupPage, insertDirectToAddTaskFormDiv };
+export { addGroupToPage, addAllTasksToGroupPage, addTaskToGroupPage, insertDirectToAddTaskFormDiv };
