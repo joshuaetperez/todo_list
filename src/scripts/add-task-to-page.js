@@ -126,6 +126,15 @@ function toggleCrossTask(e) {
   const task = AllTasks.getTask(taskName, groupName);
   task.changeCompletedStatus();
 
+  // Find task from allTasks in localStorage and change its completeStatus
+  const allTasksArrLS = JSON.parse(localStorage.getItem("allTasks")) || [];
+  const index = allTasksArrLS.findIndex(obj => (obj.taskName === taskName) && (obj.groupName === groupName));
+  if (index >= 0) {
+    const taskObj = allTasksArrLS[index];
+    taskObj.taskCompletedStatus = (task.getCompletedStatus()) ? "true" : "false"; 
+    localStorage.setItem("allTasks", JSON.stringify(allTasksArrLS));
+  }
+
   const removeButton = crossDiv.nextSibling;
   // If the task has not been crossed out, cross it out and make the "Remove Task" button (X) invisible
   if (crossDiv.firstChild.tagName !== "HR") {

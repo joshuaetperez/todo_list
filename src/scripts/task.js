@@ -1,8 +1,7 @@
 import {format} from "date-fns";
 
 // Task factory function
-const Task = (name, groupName, dueDate) => {
-  let completedStatus = false;
+const Task = (name, groupName, dueDate, completedStatus) => {
   const taskDueDateString = format(dueDate, "MM/dd/yyyy");
 
   const getName = () => name;

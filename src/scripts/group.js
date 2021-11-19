@@ -99,7 +99,8 @@ const AllTasks = (() => {
     const taskName = task.getName();
     const taskDueDate = task.getDueDate();
     const groupName = task.getGroupName();
-    const allTasksObj = {taskName, groupName, taskDueDate};
+    const taskCompletedStatus = task.getCompletedStatus();
+    const allTasksObj = {taskName, groupName, taskDueDate, taskCompletedStatus};
     for (let i = 0; i < allTasksArr.length; i++) {
       const elem = allTasksArr[i];
       const elemDueDate = elem.getDueDate();
@@ -134,7 +135,8 @@ const AllTasks = (() => {
       const taskName = obj.taskName;
       const groupName = obj.groupName;
       const taskDueDate = parseJSON(obj.taskDueDate);
-      const task = Task(taskName, groupName, taskDueDate);
+      const taskCompletedStatus = (obj.taskCompletedStatus == "true") ? true : false; 
+      const task = Task(taskName, groupName, taskDueDate, taskCompletedStatus);
       const group = CreatedGroups.getGroup(groupName);
       allTasksArr.push(task);
       group.appendTask(task);

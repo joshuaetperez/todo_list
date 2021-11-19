@@ -262,7 +262,7 @@ function taskSubmitEvent(e) {
 
   // Create the task
   const newTaskDateString = parseISO(taskFormDate.value);
-  const newTask = Task(taskName, "", newTaskDateString);
+  const newTask = Task(taskName, "", newTaskDateString, false);
 
   // If the user has input a group name, insert the task to the associated Group
   if (groupName !== "") {
