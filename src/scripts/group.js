@@ -21,7 +21,9 @@ const Group = (name) => {
     }
     taskArr.push(task);
   };
-  const appendTask = (task) => taskArr.push(task);
+  const appendTask = (task) => {
+    taskArr.push(task);
+  };
   const removeTask = (taskName) => {
     const index = taskArr.findIndex(elem => elem.getName() === taskName);
     if (index >= 0) {
@@ -40,7 +42,7 @@ const CreatedGroups = (() => {
   const getArr = () => createdGroupsArr;
   const getGroup = (groupName) => {
     const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
-    return createdGroupsArr.find(hasGroupName);
+    return (createdGroupsArr.find(hasGroupName) || "");
   }
   const getGroupIndex = (groupName) => {
     const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
@@ -139,7 +141,7 @@ const AllTasks = (() => {
       const task = Task(taskName, groupName, taskDueDate, taskCompletedStatus);
       const group = CreatedGroups.getGroup(groupName);
       allTasksArr.push(task);
-      group.appendTask(task);
+      if (group !== "") group.appendTask(task);
     });
   }
 

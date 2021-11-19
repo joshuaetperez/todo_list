@@ -237,6 +237,7 @@ button:hover {
 
 .right-side-group {
   color: #FF4136;
+  text-align: end;
 }
 
 .remove:hover {
