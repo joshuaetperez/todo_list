@@ -1,4 +1,4 @@
-import {addDays, compareAsc, isEqual, isWithinInterval, startOfToday} from "date-fns";
+import {addDays, compareAsc, isEqual, isWithinInterval, parseJSON, startOfToday} from "date-fns";
 import Task from "./task.js";
 
 // Group factory function
@@ -71,8 +71,6 @@ const CreatedGroups = (() => {
   }
   const populateArr = () => {
     const groupsArrLS = JSON.parse(localStorage.getItem("groups")) || [];
-
-    // Assumes that groupsArrLS is sorted by group name already
     groupsArrLS.forEach(name => {
       const group = Group(name);
       createdGroupsArr.push(group);
@@ -132,11 +130,12 @@ const AllTasks = (() => {
   };
   const populateArr = () => {
     const allTasksArrLS = JSON.parse(localStorage.getItem("allTasks")) || [];
-
-    // Assumes that allTasksArrLS is sorted by group name already
     allTasksArrLS.forEach(obj => {
-      const task = Task(obj.taskName, obj.groupName, obj.taskDueDate);
-      const group = CreatedGroups.getGroup(obj.getGroupName);
+      const taskName = obj.taskName;
+      const groupName = obj.groupName;
+      const taskDueDate = parseJSON(obj.taskDueDate);
+      const task = Task(taskName, groupName, taskDueDate);
+      const group = CreatedGroups.getGroup(groupName);
       allTasksArr.push(task);
       group.appendTask(task);
     });
