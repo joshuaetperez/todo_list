@@ -21,6 +21,7 @@ const Group = (name) => {
     }
     taskArr.push(task);
   };
+  const appendTask = (task) => taskArr.push(task);
   const removeTask = (taskName) => {
     const index = taskArr.findIndex(elem => elem.getName() === taskName);
     if (index >= 0) {
@@ -29,37 +30,57 @@ const Group = (name) => {
   };
   const toggleTaskListStatus = () => taskListOpenStatus = (taskListOpenStatus) ? false : true;
 
-  return {getName, getArr, isTaskListOpen, setName, pushTask, removeTask, toggleTaskListStatus};
+  return {getName, getArr, isTaskListOpen, setName, pushTask, appendTask, removeTask, toggleTaskListStatus};
 }
 
 // Module that contains all created groups
 const CreatedGroups = (() => {
-  const CreatedGroupsArr = [];
+  const createdGroupsArr = [];
 
-  const getArr = () => CreatedGroupsArr;
+  const getArr = () => createdGroupsArr;
   const getGroup = (groupName) => {
     const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
-    return CreatedGroupsArr.find(hasGroupName);
+    return createdGroupsArr.find(hasGroupName);
   }
   const getGroupIndex = (groupName) => {
     const hasGroupName = (createdGroup) => createdGroup.getName() === groupName;
-    return CreatedGroupsArr.findIndex(hasGroupName);
+    return createdGroupsArr.findIndex(hasGroupName);
   }
   const pushGroup = (group) => {
+    const groupsArrLS = JSON.parse(localStorage.getItem("groups")) || [];
     const groupName = group.getName();
-    for (let i = 0; i < CreatedGroupsArr.length; i++) {
-      const elemName = CreatedGroupsArr[i].getName();
+    for (let i = 0; i < createdGroupsArr.length; i++) {
+      const elemName = createdGroupsArr[i].getName();
       if (groupName < elemName) {
-        CreatedGroupsArr.splice(i, 0, group);
+        createdGroupsArr.splice(i, 0, group);
+        groupsArrLS.splice(i, 0 , groupName);
+        localStorage.setItem("groups", JSON.stringify(groupsArrLS));
         return;
       }
     }
-    CreatedGroupsArr.push(group);
+    createdGroupsArr.push(group);
+    groupsArrLS.push(groupName);
+    localStorage.setItem("groups", JSON.stringify(groupsArrLS));
   };
   const removeGroup = (groupName) => {
+    const groupsArrLS = JSON.parse(localStorage.getItem("groups")) || [];
     const groupIndex = getGroupIndex(groupName);
-    CreatedGroupsArr.splice(groupIndex, 1);
+    createdGroupsArr.splice(groupIndex, 1);
+    groupsArrLS.splice(groupIndex, 1);
+    localStorage.setItem("groups", JSON.stringify(groupsArrLS));
   }
+  const populateArr = () => {
+    const groupsArrLS = JSON.parse(localStorage.getItem("groups")) || [];
+
+    // Assumes that groupsArrLS is sorted by group name already
+    groupsArrLS.forEach(name => {
+      const group = Group(name);
+      createdGroupsArr.push(group);
+    });
+  }
+
+  // Call populateArr
+  populateArr();
 
   return {getArr, getGroup, getGroupIndex, pushGroup, removeGroup};
 })();
@@ -76,63 +97,53 @@ const AllTasks = (() => {
     }
   };
   const pushTask = (task) => {
+    const allTasksArrLS = JSON.parse(localStorage.getItem("allTasks")) || [];
+    const taskName = task.getName();
     const taskDueDate = task.getDueDate();
     const groupName = task.getGroupName();
+    const allTasksObj = {taskName, groupName, taskDueDate};
     for (let i = 0; i < allTasksArr.length; i++) {
       const elem = allTasksArr[i];
       const elemDueDate = elem.getDueDate();
       const elemGroupName = elem.getGroupName();
       if (((compareAsc(taskDueDate, elemDueDate) === 0) && (groupName < elemGroupName)) || (compareAsc(taskDueDate, elemDueDate) === -1)) {
         allTasksArr.splice(i, 0, task);
+        allTasksArrLS.splice(i, 0 , allTasksObj);
+        localStorage.setItem("allTasks", JSON.stringify(allTasksArrLS));
         return;
       }
     }
     allTasksArr.push(task);
+    allTasksArrLS.push(allTasksObj);
+    localStorage.setItem("allTasks", JSON.stringify(allTasksArrLS));
   };
   const removeTask = (taskName, groupName) => {
     const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
     if (index >= 0) {
+      const allTasksArrLS = JSON.parse(localStorage.getItem("allTasks")) || [];
       allTasksArr.splice(index, 1);
+      allTasksArrLS.splice(index, 1);
+      localStorage.setItem("allTasks", JSON.stringify(allTasksArrLS));
     }
   };
   const isDuplicate = (taskName, groupName) => {
     const index = allTasksArr.findIndex(elem => (elem.getName() === taskName) && (elem.getGroupName() === groupName));
-    if (index >= 0) {
-      return true;
-    }
-    return false;
+    return (index >= 0);
   };
+  const populateArr = () => {
+    const allTasksArrLS = JSON.parse(localStorage.getItem("allTasks")) || [];
 
-   // TEMPORARY DATA FOR DEBEUGGING
-  const task1Date = new Date(2021, 10, 20);
-  const task1 = Task("Take out the trash", "", task1Date);
-  const task2Date = new Date(2021, 10, 18);
-  const task2 = Task("Do the dishes", "Cleaning", task2Date);
-  const task3Date = new Date(2021, 10, 17);
-  const task3 = Task("Clean the house", "Cleaning", task3Date);
-  const task4Date = new Date(2021, 10, 21);
-  const task4 = Task("Go grocery shopping", "", task4Date);
-  const task5Date = new Date(2021, 10, 22);
-  const task5 = Task("Do homework", "", task5Date);
-  const task6Date = startOfToday();
-  const task6 = Task("Clip fingernails", "School", task6Date);
-  const task7Date = startOfToday();
-  const task7 = Task("Read from the textbook", "School", task7Date);
-  pushTask(task1);
-  pushTask(task2);
-  pushTask(task3);
-  pushTask(task4);
-  pushTask(task5);
-  pushTask(task6);
-  pushTask(task7);
-  const cleaningGroup = Group("Cleaning");
-  const schoolGroup = Group("School");
-  cleaningGroup.pushTask(task2);
-  cleaningGroup.pushTask(task3);
-  schoolGroup.pushTask(task6);
-  schoolGroup.pushTask(task7); 
-  CreatedGroups.pushGroup(cleaningGroup);
-  CreatedGroups.pushGroup(schoolGroup);
+    // Assumes that allTasksArrLS is sorted by group name already
+    allTasksArrLS.forEach(obj => {
+      const task = Task(obj.taskName, obj.groupName, obj.taskDueDate);
+      const group = CreatedGroups.getGroup(obj.getGroupName);
+      allTasksArr.push(task);
+      group.appendTask(task);
+    });
+  }
+
+  // Call populateArr
+  populateArr();
 
   return {getArr, getTask, pushTask, removeTask, isDuplicate};
 })();
