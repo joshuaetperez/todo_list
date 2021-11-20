@@ -21,9 +21,7 @@ const Group = (name) => {
     }
     taskArr.push(task);
   };
-  const appendTask = (task) => {
-    taskArr.push(task);
-  };
+  const appendTask = (task) => taskArr.push(task);
   const removeTask = (taskName) => {
     const index = taskArr.findIndex(elem => elem.getName() === taskName);
     if (index >= 0) {

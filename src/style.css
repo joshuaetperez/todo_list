@@ -47,7 +47,6 @@ html {
 
 :root {
   --header-footer-height: 42px;
-  --sidebar-width: 200px;
   --form-padding: 5px;
 }
   
@@ -107,7 +106,7 @@ button:hover {
 .main {
   font-size: 24px;
   margin-left: var(--sidebar-width);
-  padding: 30px 200px;
+  padding: 30px 150px;
 }
 
 .task-list,
@@ -227,6 +226,7 @@ button:hover {
 .left-side-div {
   display: flex;
   gap: 5px;
+  word-break: break-word;
 }
 
 .right-side-div {
@@ -238,6 +238,7 @@ button:hover {
 .right-side-group {
   color: #FF4136;
   text-align: end;
+  word-break: break-word;
 }
 
 .remove:hover {
@@ -285,4 +286,101 @@ button:hover {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  :root{
+    --sidebar-width: 150px;
+  }
+
+  .main {
+    font-size: 18px;
+    margin-left: var(--sidebar-width);
+    padding: 10px 15px;
+  }
+
+  .right-side-group {
+    display: none;
+  }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  :root{
+    --sidebar-width: 175px;
+  }
+
+  .main {
+    font-size: 18px;
+    margin-left: var(--sidebar-width);
+    padding: 20px 25px;
+  }
+
+  .right-side-group {
+    display: none;
+  }
+}
+/* Medium devices (landscape tablets, 865px and up) */
+@media only screen and (min-width: 875px) {
+  :root{
+    --sidebar-width: 175px;
+  }
+
+  .main {
+    font-size: 18px;
+    margin-left: var(--sidebar-width);
+    padding: 20px 25px;
+  }
+
+  .right-side-group {
+    display: inline-block;
+  }
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  :root{
+    --sidebar-width: 175px;
+  }
+
+  .main {
+    font-size: 18px;
+    margin-left: var(--sidebar-width);
+    padding: 25px 40px;
+  }
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1250px) {
+  :root{
+    --sidebar-width: 200px;
+  }
+
+  .main {
+    font-size: 19px;
+    margin-left: var(--sidebar-width);
+    padding: 30px 65px;
+  }
+}
+/* Extra large devices (large laptops and desktops, 1400px and up) */
+@media only screen and (min-width: 1400px) {
+  :root{
+    --sidebar-width: 200px;
+  }
+  
+  .main {
+    font-size: 20px;
+    margin-left: var(--sidebar-width);
+    padding: 30px 100px;
+  }
+}
+/* BEEG devices (1600px and up) */
+@media only screen and (min-width: 1600px) {
+  :root{
+    --sidebar-width: 200px;
+  }
+
+  .main {
+    font-size: 22px;
+    margin-left: var(--sidebar-width);
+    padding: 30px 175px;
+  }
 }

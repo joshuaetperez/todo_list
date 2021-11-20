@@ -63,7 +63,7 @@ export default function displaySidebar() {
   taskFormCancel.id = "fcancel-task";
   taskFormName.placeholder = "Name of Task";
   taskFormGroup.placeholder = "Group of Task (can be empty)";
-  taskFormName.maxLength = 100;
+  taskFormName.maxLength = 50;
   taskFormGroup.maxLength = 50;
   taskFormDate.min = todaysDate;
   taskFormName.required = true;
