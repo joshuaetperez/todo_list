@@ -16,8 +16,7 @@ html {
     url('./fonts/MaterialIcons-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('./fonts/MaterialIcons-Regular.woff2') format('woff2'),
     url('./fonts/MaterialIcons-Regular.woff') format('woff'),
-    url('./fonts/MaterialIcons-Regular.ttf') format('truetype'),
-    url('./fonts/MaterialIcons-Regular.svg#Inconsolata') format('svg'); /* Legacy iOS */
+    url('./fonts/MaterialIcons-Regular.ttf') format('truetype');
 }
 
 .material-icons {
