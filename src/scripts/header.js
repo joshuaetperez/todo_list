@@ -5,7 +5,7 @@ export default function displayHeader() {
 
   const headerDiv = document.createElement("div");
   headerDiv.classList.add("header");
-  headerDiv.textContent = "Todo list";
+  headerDiv.textContent = "Todo List";
 
   contentDiv.appendChild(headerDiv);
 }

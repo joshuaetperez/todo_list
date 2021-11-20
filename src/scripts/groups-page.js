@@ -80,9 +80,18 @@ function getGroupTaskContainer(groupName) {
 function insertDirectToAddTaskFormDiv(groupName) {
   const groupTaskContainer = getGroupTaskContainer(groupName);
   const directDiv = document.createElement("div");
+  const addIcon = document.createElement("span");
+  const addTaskText = document.createElement("p");
   directDiv.classList.add("direct-to-form-div");
-  directDiv.textContent = "+ Add Task";
+
+  addIcon.className = "unselectable material-icons";
+  addIcon.textContent = "add";
+  addTaskText.textContent = "Add Task";
+
   directDiv.addEventListener("click", directToAddTaskForm);
+
+  directDiv.appendChild(addIcon);
+  directDiv.appendChild(addTaskText);
   groupTaskContainer.appendChild(directDiv);
 }
 
@@ -110,7 +119,7 @@ function toggleGroupTaskList(e) {
 // Shows the "Add Task" form (if not open already) and fills in the group name 
 function directToAddTaskForm(e) {
   // Get group name
-  const directDiv = e.target;
+  const directDiv = e.currentTarget;
   const groupName = directDiv.parentNode.previousSibling.firstChild.textContent;
 
   // Open "Add Task" form (if not already open)

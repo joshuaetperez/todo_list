@@ -81,21 +81,20 @@ button:hover {
   width: 100vw;
 }
 
-.header,
-.footer {
-  background-color: #39CCCC;
+.header {
+  background-color: #3D9970;
   text-align: center;
   font-size: 36px;
 }
 
 .container {
-  background-color: #e5e5e5;
+  background-color: #E5E5E5;
   flex: 1;
   overflow-y: auto;
 }
 
 .sidebar {
-  background-color: #DDDDDD;
+  background-color: #D3D3D3;
   text-align: center;
   position: fixed;
   height: calc(100vh - var(--header-footer-height));
@@ -146,6 +145,7 @@ button:hover {
   flex-direction: column;
   width: calc(--sidebar-width - --form-padding);
   padding: var(--form-padding);
+  padding-top: 10px;
   background-color: #3D9970;
 }
 
@@ -199,6 +199,12 @@ button:hover {
   cursor: pointer;
 }
 
+.task-div:hover,
+.group-name-container:hover {
+  background-color: #DDD;
+}
+
+
 .task-flex-div {
   display: flex;
   justify-content: space-between;
@@ -210,8 +216,12 @@ button:hover {
   position: relative;
 }
 
+.group-task-container .cross-div {
+  margin-left: 7px;
+}
+
 .hr-cross {
-  background-color: #FF4136;
+  background-color: #dc8f2f;
   height: 3px;
   position: absolute;
   left: 0;
@@ -265,15 +275,18 @@ button:hover {
 
 .group-task-container {
   display: none;
-  background-color: #fff;
+  background-color: #FFF;
   margin-left: 20px;
 }
 
 .direct-to-form-div {
   display: flex;
-  justify-content: space-between;
   border-bottom: 1px #AAA solid;
   cursor: pointer;
+}
+
+.direct-to-form-div:hover {
+  background-color: #3D9970;
 }
 
 .titleDiv {
@@ -286,6 +299,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  margin-right: 25px;
 }
 
 /* Extra small devices (phones, 600px and down) */
